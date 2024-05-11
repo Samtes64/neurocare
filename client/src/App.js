@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Workouts from "./pages/Workouts";
+import Homepage from "./pages/Hero";
 
 const Container = styled.div`
   width: 100%;
@@ -35,7 +36,13 @@ function App() {
           </Container>
         ) : (
           <Container>
-            <Authentication />
+            <Routes>
+      {/* Redirect all routes to the homepage */}
+      <Route path="/*" element={<Homepage />} />
+      {/* Define other routes here if needed */}
+      <Route path="/login" exact element={<Authentication />} />
+
+    </Routes>
           </Container>
         )}
       </BrowserRouter>

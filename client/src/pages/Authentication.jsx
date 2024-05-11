@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import LogoImage from "../utils/Images/Logo.png";
-import AuthImage from "../utils/Images/AuthImage.jpg";
+import AuthImage from "../utils/Images/AuthImage.png";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 
@@ -67,8 +67,8 @@ const Authentication = () => {
   return (
     <Container>
       <Left>
-        <Logo src={LogoImage} />
-        <Image src={AuthImage} />
+        {/* <Logo src={LogoImage} /> */}
+        <Image src={AuthImage} className="w-12 h-12 text-white p-2 rounded-full" />
       </Left>
       <Right>
         {!login ? (
