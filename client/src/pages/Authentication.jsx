@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import LogoImage from "../utils/Images/Logo.png";
 import AuthImage from "../utils/Images/AuthImage.png";
@@ -62,8 +62,13 @@ const TextButton = styled.span`
   font-weight: 600;
 `;
 
-const Authentication = () => {
+const Authentication = ({loginProp}) => {
   const [login, setLogin] = useState(false);
+
+  useEffect(() => {
+    // Set login state based on the value of loginProp
+    setLogin(loginProp);
+  }, [loginProp]);
   return (
     <Container>
       <Left>

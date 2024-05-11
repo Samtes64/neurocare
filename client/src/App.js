@@ -37,12 +37,12 @@ function App() {
         ) : (
           <Container>
             <Routes>
-      {/* Redirect all routes to the homepage */}
-      <Route path="/*" element={<Homepage />} />
-      {/* Define other routes here if needed */}
-      <Route path="/login" exact element={<Authentication />} />
-
-    </Routes>
+              {/* Redirect all routes to the homepage */}
+              <Route path="/*" element={<Homepage />} />
+              {/* Define other routes here if needed */}
+              <Route path="/login" exact element={<Authentication loginProp={false} />} />
+              <Route path="/signup" exact element={<Authentication loginProp={true} />} />
+            </Routes>
           </Container>
         )}
       </BrowserRouter>
