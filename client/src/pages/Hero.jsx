@@ -44,6 +44,7 @@ function Hero() {
               healing today.
             </p>
             <div className="flex justify-center">
+            <Link to="/signup">
               <button className="inline-flex items-center justify-center text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded-md text-lg shadow-lg">
                 <span className="text-sm ">Get Started</span>
                 <svg
@@ -61,9 +62,12 @@ function Hero() {
                   />
                 </svg>
               </button>
+              </Link>
+              <Link to="/assessment">
               <button className="ml-4 inline-flex items-center justify-center text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded-md text-lg shadow-lg">
                 <span className="text-sm ">Take Assessment</span>
               </button>
+              </Link>
             </div>
           </div>
           <div className="lg:max-w-lg lg:w-full md:w-1/2 ">
