@@ -4,7 +4,7 @@ const Answer = ({ choice, text, onSelectAnswer }) => {
 	const answerStyle = {
 		label: ` p-3 px-5 block cursor-pointer rounded-full border border-black  border-opacity-20  dark:border-primary dark:border-opacity-[0.5] mb-3  ${
 			choice === text &&
-			"bg-accent dark:bg-primary text-slate-100 border-transparent"
+			"bg-slate-400 dark:bg-primary text-slate-100 border-transparent"
 		} hover:bg-accent dark:hover:bg-primary dark:hover:text-accent hover:text-slate-100`,
 		text: "ps-3 text-lg font-normal",
 	};

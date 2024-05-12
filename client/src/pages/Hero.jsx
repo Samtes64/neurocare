@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function Hero() {
   return (
-    <div className="bg-blue-300 h-screen">
+    <div className="bg-blue-100 h-screen">
       <header className="text-gray-600 body-font">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
           <a
