@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
       type: String,
       required: true,
     },
@@ -11,16 +15,18 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    img: {
-      type: String,
-      default: null,
-    },
+
     password: {
       type: String,
       required: true,
     },
-    age: {
-      type: Number,
+    userType: {
+      type: String,
+      enum: ["admin", "patient", "therapist"],
+      default: null,
+    },
+    isActive: {
+      type: Boolean,
     },
   },
   { timestamps: true }

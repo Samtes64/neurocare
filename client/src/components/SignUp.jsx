@@ -28,12 +28,14 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [name, setName] = useState("");
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("patient")
 
   const validateInputs = () => {
-    if (!name || !email || !password) {
+    if (!firstName || !lastName || !email || !password) {
       alert("Please fill in all fields");
       return false;
     }
@@ -44,7 +46,7 @@ const SignUp = () => {
     setLoading(true);
     setButtonDisabled(true);
     if (validateInputs()) {
-      await UserSignUp({ name, email, password })
+      await UserSignUp({ firstName, lastName, email, password,userType })
         .then((res) => {
           dispatch(loginSuccess(res.data));
           alert("Account Created Success");
@@ -72,10 +74,16 @@ const SignUp = () => {
         }}
       >
         <TextInput
-          label="Full name"
+          label="First name"
           placeholder="Enter your full name"
-          value={name}
-          handelChange={(e) => setName(e.target.value)}
+          value={firstName}
+          handelChange={(e) => setfirstName(e.target.value)}
+        />
+        <TextInput
+          label="Last name"
+          placeholder="Enter your full name"
+          value={lastName}
+          handelChange={(e) => setlastName(e.target.value)}
         />
         <TextInput
           label="Email Address"
