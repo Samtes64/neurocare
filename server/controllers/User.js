@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import { createError } from "../error.js";
 import User from "../models/User.js";
 import Workout from "../models/Workout.js";
+import Patient from "../models/Patient.js";
+import Therapist from "../models/Therapist.js";
 
 dotenv.config();
 
@@ -30,6 +32,22 @@ export const UserRegister = async (req, res, next) => {
       isActive,
     });
     const createdUser = await user.save();
+    // Create a new Patient or Therapist document based on userType
+    if (userType === "patient") {
+      const patient = new Patient({
+        user: createdUser._id,
+        firstName: createdUser.firstName,
+        lastName: createdUser.lastName,
+      });
+      await patient.save();
+    } else if (userType === "therapist") {
+      const therapist = new Therapist({
+        user: createdUser._id,
+        firstName: createdUser.firstName,
+        lastName: createdUser.lastName,
+      });
+      await therapist.save();
+    }
     const token = jwt.sign({ id: createdUser._id }, process.env.JWT, {
       expiresIn: "9999 years",
     });
@@ -49,8 +67,9 @@ export const UserLogin = async (req, res, next) => {
       return next(createError(404, "User not found"));
     }
     console.log(user);
+
     // Check if password is correct
-    const isPasswordCorrect = await bcrypt.compareSync(password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
       return next(createError(403, "Incorrect password"));
     }
@@ -59,11 +78,28 @@ export const UserLogin = async (req, res, next) => {
       expiresIn: "9999 years",
     });
 
+    if (user.userType === "patient") {
+      const patient = await Patient.findOne({ user: user._id });
+      if (!patient) {
+        return next(createError(404, "Patient not found"));
+      }
+      console.log(patient);
+      return res.status(200).json({ token, user, patient });
+    } else if (user.userType === "therapist") {
+      const therapist = await Therapist.findOne({ user: user._id });
+      if (!therapist) {
+        return next(createError(404, "Therapist not found"));
+      }
+      console.log(therapist);
+      return res.status(200).json({ token, user, therapist });
+    }
+
     return res.status(200).json({ token, user });
   } catch (error) {
     return next(error);
   }
 };
+
 
 export const getUserDashboard = async (req, res, next) => {
   try {

@@ -12,43 +12,120 @@ const Card = styled.div`
   box-shadow: 1px 6px 20px 0px ${({ theme }) => theme.primary + 15};
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 16px;
+  background: ${({ theme }) => theme.background_secondary};
   @media (max-width: 600px) {
     padding: 16px;
   }
 `;
+
 const Title = styled.div`
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
   color: ${({ theme }) => theme.primary};
+  text-align: center;
+  margin-bottom: 10px;
+  @media (max-width: 600px) {
+    font-size: 18px;
+  }
+`;
+
+const Select = styled.select`
+  padding: 12px;
+  border: 1px solid ${({ theme }) => theme.text_primary + 20};
+  border-radius: 8px;
+  background: ${({ theme }) => theme.background_primary};
+  color: ${({ theme }) => theme.text_primary};
+  font-size: 16px;
   @media (max-width: 600px) {
     font-size: 14px;
   }
 `;
 
-const AddWorkout = ({ workout, setWorkout, addNewWorkout, buttonLoading }) => {
+const Subtitle = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  color: ${({ theme }) => theme.text_primary};
+  text-align: center;
+  margin-top: 10px;
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
+`;
+
+const Sticker = styled.span`
+  font-size: 24px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: transform 0.3s;
+  transform: scale(${({ selected }) => (selected ? 1.4 : 1)});
+  @media (max-width: 600px) {
+    font-size: 28px;
+  }
+`;
+
+const StickerRating = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+`;
+
+const AddDoneTask = ({ treatments = [], addNewTask, buttonLoading }) => {
+  const [treatment, setTreatment] = useState("");
+  const [duration, setDuration] = useState("");
+  const [mood, setMood] = useState(0);
+  const [note, setNote] = useState("");
+
+  const handleAddTask = () => {
+    addNewTask({ treatment, duration, mood, note });
+  };
+
+  const stickers = ["😢", "😟", "😐", "😊", "😃"];
+
   return (
     <Card>
-      <Title>Add New Workout</Title>
+      <Title>Add Done Task</Title>
+      <Select value={treatment} onChange={(e) => setTreatment(e.target.value)}>
+        <option value="" disabled>
+          Select Treatment
+        </option>
+        {treatments.map((t) => (
+          <option key={t.id} value={t.id}>
+            {t.name}
+          </option>
+        ))}
+      </Select>
       <TextInput
-        label="Workout"
+        label="Duration (minutes)"
+        placeholder="Enter duration in minutes"
+        value={duration}
+        handelChange={(e) => setDuration(e.target.value)}
+        type="number"
+      />
+      <Subtitle>Select Mood</Subtitle>
+      <StickerRating>
+        {stickers.map((sticker, index) => (
+          <Sticker
+            key={index}
+            selected={index + 1 === mood}
+            onClick={() => setMood(index + 1)}
+          >
+            {sticker}
+          </Sticker>
+        ))}
+      </StickerRating>
+      <TextInput
+        label="Note"
+        placeholder="Enter additional notes"
+        value={note}
+        handelChange={(e) => setNote(e.target.value)}
         textArea
-        rows={10}
-        placeholder={`Enter in this format:
-
-#Category
--Workout Name
--Sets
--Reps
--Weight
--Duration`}
-        value={workout}
-        handelChange={(e) => setWorkout(e.target.value)}
+        rows={4}
       />
       <Button
-        text="Add Workout"
+        text="Add Task"
         small
-        onClick={() => addNewWorkout()}
+        onClick={handleAddTask}
         isLoading={buttonLoading}
         isDisabled={buttonLoading}
       />
@@ -56,4 +133,4 @@ const AddWorkout = ({ workout, setWorkout, addNewWorkout, buttonLoading }) => {
   );
 };
 
-export default AddWorkout;
+export default AddDoneTask;

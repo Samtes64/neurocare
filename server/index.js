@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import UserRoutes from "./routes/User.js";
+import DoneTasks from "./models/DoneTasks.js";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true })); // for form data
 
 app.use("/api/user/", UserRoutes);
+app.use("/api/doneTask",DoneTasks)
 // error handler
 app.use((err, req, res, next) => {
   const status = err.status || 500;
@@ -25,7 +27,7 @@ app.use((err, req, res, next) => {
 
 app.get("/", async (req, res) => {
   res.status(200).json({
-    message: "Hello developers from GFG",
+    message: "Hello there",
   });
 });
 
