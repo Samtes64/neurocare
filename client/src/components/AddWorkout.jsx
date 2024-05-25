@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import TextInput from "./TextInput";
-import Button from "./Button";
+import Button from "./Button"; 
+import { getAllTreatments } from "../api";
+
 
 const Card = styled.div`
   flex: 1;
@@ -70,11 +72,32 @@ const StickerRating = styled.div`
   gap: 8px;
 `;
 
-const AddDoneTask = ({ treatments = [], addNewTask, buttonLoading }) => {
+
+
+const AddDoneTask = ({ addNewTask, buttonLoading }) => {
   const [treatment, setTreatment] = useState("");
+  const [treatments, setTreatments] = useState([])
   const [duration, setDuration] = useState("");
   const [mood, setMood] = useState(0);
   const [note, setNote] = useState("");
+
+  const token = localStorage.getItem("fittrack-app-token");
+  
+  useEffect(() => {
+    const fetchTreatments = async () => {
+      try {
+        const response = await getAllTreatments(token);
+        
+        const data = await response.data;
+        setTreatments(data);
+        console.log("Fetched data:", data);
+      } catch (error) {
+        console.error("Error fetching treatments:", error);
+      }
+    };
+
+    fetchTreatments();
+  }, [token]);
 
   const handleAddTask = () => {
     addNewTask({ treatment, duration, mood, note });
@@ -86,13 +109,9 @@ const AddDoneTask = ({ treatments = [], addNewTask, buttonLoading }) => {
     <Card>
       <Title>Add Done Task</Title>
       <Select value={treatment} onChange={(e) => setTreatment(e.target.value)}>
-        <option value="" disabled>
-          Select Treatment
-        </option>
+        <option value="" disabled>Select Treatment</option>
         {treatments.map((t) => (
-          <option key={t.id} value={t.id}>
-            {t.name}
-          </option>
+          <option >{t.treatmentName}</option>
         ))}
       </Select>
       <TextInput

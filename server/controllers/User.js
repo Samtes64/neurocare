@@ -7,6 +7,9 @@ import Workout from "../models/Workout.js";
 import Patient from "../models/Patient.js";
 import Therapist from "../models/Therapist.js";
 
+
+
+
 dotenv.config();
 
 export const UserRegister = async (req, res, next) => {

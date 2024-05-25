@@ -3,7 +3,8 @@ import * as dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import UserRoutes from "./routes/User.js";
-import DoneTasks from "./models/DoneTasks.js";
+import TreatmentRoutes from "./routes/Treatment.js"
+
 
 dotenv.config();
 
@@ -13,7 +14,8 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true })); // for form data
 
 app.use("/api/user/", UserRoutes);
-app.use("/api/doneTask",DoneTasks)
+
+app.use("/api/treatment",TreatmentRoutes)
 // error handler
 app.use((err, req, res, next) => {
   const status = err.status || 500;
