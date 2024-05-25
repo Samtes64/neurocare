@@ -5,7 +5,7 @@ import ThemeProvider from './theme';
 // components
 import ThemeSettings from './components/settings';
 
-function App() {
+function Chat() {
   return (
     <ThemeProvider>
       <ThemeSettings>
@@ -16,4 +16,4 @@ function App() {
   );
 }
 
-export default App;
+export default Chat;
