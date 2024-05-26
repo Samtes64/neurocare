@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 
 import Header from "./Header";
 import Footer from "./Footer";
+import Message from "./Message";
 
 const Index = () => {
   return (
@@ -11,15 +12,10 @@ const Index = () => {
       maxHeight={"100vh"}
       width={"auto"}
       direction="column"
+      pb={4}
     >
       <Header />
-      <Box
-        sx={{
-          flexGrow: 1,
-          width: "100%",
-          backgroundColor: "#fff",
-        }}
-      ></Box>
+      <Message />
       <Footer />
     </Stack>
   );
