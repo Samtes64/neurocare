@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 
@@ -12,16 +12,18 @@ const DashboardLayout = () => {
   const [selected, setSelected] = useState("");
 
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        height: '100vh',
+      }}
+    >
       <Box
         sx={{
-          height: "100vh",
           width: 100,
-
-          backgroundColor:
-            theme.palette.mode === "light"
-              ? "#FFFFFF"
-              : theme.palette.background.paper,
+          backgroundColor: theme.palette.mode === "light"
+            ? "#FFFFFF"
+            : theme.palette.background.paper,
           boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
         }}
       >
@@ -31,10 +33,11 @@ const DashboardLayout = () => {
           sx={{ height: "100%" }}
           justifyContent={"space-between"}
         >
-          <Stack  alignItems={"center"} spacing={4}>
-            {Nav_Buttons.map((el) => {
-              return el.index == selected ? (
+          <Stack alignItems={"center"} spacing={4}>
+            {Nav_Buttons.map((el) => (
+              el.index === selected ? (
                 <Box
+                  key={el.index}
                   sx={{
                     backgroundColor: theme.palette.primary.main,
                     borderRadius: 1.5,
@@ -52,6 +55,7 @@ const DashboardLayout = () => {
                 </Box>
               ) : (
                 <IconButton
+                  key={el.index}
                   onClick={() => {
                     setSelected(el.index);
                   }}
@@ -65,12 +69,13 @@ const DashboardLayout = () => {
                 >
                   {el.icon}
                 </IconButton>
-              );
-            })}
+              )
+            ))}
             <Divider sx={{ width: 48 }} />
-            {Nav_Setting.map((el) => {
-              return el.index == selected ? (
+            {Nav_Setting.map((el) => (
+              el.index === selected ? (
                 <Box
+                  key={el.index}
                   sx={{
                     backgroundColor: theme.palette.primary.main,
                     borderRadius: 1.5,
@@ -88,10 +93,9 @@ const DashboardLayout = () => {
                 </Box>
               ) : (
                 <IconButton
+                  key={el.index}
                   onClick={() => {
                     setSelected(el.index);
-
-                    // dispatch(UpdateTab(el.index));
                   }}
                   sx={{
                     width: "max-content",
@@ -103,8 +107,8 @@ const DashboardLayout = () => {
                 >
                   {el.icon}
                 </IconButton>
-              );
-            })}
+              )
+            ))}
           </Stack>
           <Stack>
             <Avatar />
@@ -112,8 +116,12 @@ const DashboardLayout = () => {
         </Stack>
       </Box>
 
-      <Outlet />
-    </>
+      <Box
+        
+      >
+        <Outlet />
+      </Box>
+    </Box>
   );
 };
 
