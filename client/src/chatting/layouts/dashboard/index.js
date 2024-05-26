@@ -16,8 +16,10 @@ const DashboardLayout = () => {
       sx={{
         display: 'flex',
         height: '100vh',
+        pb: 4,
       }}
     >
+
       <Box
         sx={{
           width: 100,
