@@ -10,6 +10,7 @@ import useSettings from "../../hooks/useSettings";
 import { Nav_Buttons, Nav_Setting } from "../../data";
 
 import { useNavigate } from "react-router-dom";
+import ProfileMenu from "./ProfileMenu";
 
 const getPath = (index) => {
   switch (index) {
@@ -52,7 +53,7 @@ const SideBar = () => {
             ? "#FFFFFF"
             : theme.palette.background.paper,
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
-        pb:4
+        pb: 4,
       }}
     >
       <Stack
@@ -139,7 +140,8 @@ const SideBar = () => {
           )}
         </Stack>
         <Stack>
-          <Avatar />
+          {/* Profile Menu */}
+          <ProfileMenu />
         </Stack>
       </Stack>
     </Box>
