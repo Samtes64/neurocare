@@ -1,22 +1,20 @@
-import { combineReducers } from 'redux';
-import storage from 'redux-persist/lib/storage';
+import { combineReducers } from "redux";
+import storage from "redux-persist/lib/storage";
 // slices
-import appReducer from './slices/app';
-
+import appReducer from "../../redux/reducers/app";
 
 // ----------------------------------------------------------------------
 
 const rootPersistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  keyPrefix: 'redux-',
+  keyPrefix: "redux-",
   //   whitelist: [],
   //   blacklist: [],
 };
 
 const rootReducer = combineReducers({
   app: appReducer,
- 
 });
 
 export { rootPersistConfig, rootReducer };

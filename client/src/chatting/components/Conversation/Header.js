@@ -16,7 +16,7 @@ import { faker } from "@faker-js/faker";
 import useResponsive from "../../hooks/useResponsive";
 import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from "phosphor-react";
 import { useDispatch, useSelector } from "react-redux";
-import { ToggleSidebar } from "../../redux/slices/app";
+import { ToggleSidebar } from "../../../redux/reducers/app";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -80,9 +80,13 @@ const Header = () => {
         sx={{ width: "100%", height: "100%" }}
         justifyContent="space-between"
       >
-        <Stack  onClick={() => {
-              dispatch(ToggleSidebar());
-            }} spacing={2} direction="row">
+        <Stack
+          onClick={() => {
+            dispatch(ToggleSidebar());
+          }}
+          spacing={2}
+          direction="row"
+        >
           <Box>
             <StyledBadge
               overlap="circular"

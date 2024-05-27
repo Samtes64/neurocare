@@ -17,6 +17,8 @@ import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from "phosphor-react";
 import { faker } from "@faker-js/faker";
 import { useSearchParams } from "react-router-dom";
 import useResponsive from "../../hooks/useResponsive";
+import { useDispatch } from "react-redux";
+import { ToggleSidebar } from "../../../redux/reducers/app";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -76,6 +78,7 @@ const ChatHeader = () => {
   const handleCloseConversationMenu = () => {
     setConversationMenuAnchorEl(null);
   };
+  const dispatch = useDispatch();
 
   return (
     <Box
@@ -95,8 +98,7 @@ const ChatHeader = () => {
       >
         <Stack
           onClick={() => {
-            searchParams.set("open", true);
-            setSearchParams(searchParams);
+            dispatch(ToggleSidebar());
           }}
           spacing={2}
           direction="row"
