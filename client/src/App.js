@@ -10,6 +10,7 @@ import Workouts from "./pages/Workouts";
 import Homepage from "./pages/Hero";
 import Assessment from "./pages/Assessment";
 import DashboardLayout from "./chatting/layouts/dashboard";
+import WithReduxProvider from "./chatting/layouts/dashboard/withReduxProvider";
 import Page404 from "./chatting/pages/Page404";
 import { Suspense,lazy } from "react";
 import LoadingScreen from "./chatting/components/LoadingScreen";
@@ -51,7 +52,7 @@ function App() {
             <Routes>
               <Route path="/" exact element={<Dashboard />} />
               <Route path="/workouts" exact element={<Workouts />} />
-              <Route path="/chat/*" element={<DashboardLayout />}>
+              <Route path="/chat/*" element={<WithReduxProvider />}>
                 <Route index element={<GeneralApp />} />
                 <Route path="404" element={<Page404 />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
