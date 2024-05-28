@@ -12,16 +12,19 @@ import { Nav_Buttons, Nav_Setting } from "../../data";
 import { useNavigate } from "react-router-dom";
 import ProfileMenu from "./ProfileMenu";
 
+import { useDispatch, useSelector } from "react-redux";
+import { UpdateTab } from "../../../redux/reducers/app";
+
 const getPath = (index) => {
   switch (index) {
     case 0:
-      return "/app";
+      return "/chat";
 
     case 1:
-      return "/group";
+      return "/chat/group";
 
     case 2:
-      return "/call";
+      return "/chat/call";
 
     case 3:
       return "/settings";
@@ -40,7 +43,14 @@ const SideBar = () => {
 
   const [selected, setSelected] = useState("");
 
+  const dispatch = useDispatch();
+
+  const { tab } = useSelector((state) => state.app);
+
+  const selectedTab = tab;
+
   const handleChangeTab = (index) => {
+    dispatch(UpdateTab({ tab: index }));
     navigate(getPath(index));
   };
 
@@ -63,83 +73,86 @@ const SideBar = () => {
         sx={{ height: "100%" }}
         justifyContent={"space-between"}
       >
-        <Stack alignItems={"center"} spacing={4}>
-          {Nav_Buttons.map((el) =>
-            el.index === selected ? (
-              <Box
-                key={el.index}
-                sx={{
-                  backgroundColor: theme.palette.primary.main,
-                  borderRadius: 1.5,
-                }}
-                p={0.5}
-              >
+       <Stack
+            sx={{ width: "max-content" }}
+            direction="column"
+            alignItems={"center"}
+            spacing={3}
+          >
+            {Nav_Buttons.map((el) => {
+              return el.index == selectedTab ? (
+                <Box
+                  sx={{
+                    backgroundColor: theme.palette.primary.main,
+                    borderRadius: 1.5,
+                  }}
+                  p={1}
+                >
+                  <IconButton
+                    onClick={() => {
+                      handleChangeTab(el.index);
+                    }}
+                    sx={{ width: "max-content", color: "#ffffff" }}
+                  >
+                    {el.icon}
+                  </IconButton>
+                </Box>
+              ) : (
                 <IconButton
                   onClick={() => {
-                    setSelected(el.index);
+                    handleChangeTab(el.index);
                   }}
-                  sx={{ width: "max-content", color: "#ffffff" }}
+                  sx={{
+                    width: "max-content",
+                    color:
+                      theme.palette.mode === "light"
+                        ? "#080707"
+                        : theme.palette.text.primary,
+                  }}
                 >
                   {el.icon}
                 </IconButton>
-              </Box>
-            ) : (
-              <IconButton
-                key={el.index}
-                onClick={() => {
-                  setSelected(el.index);
-                }}
-                sx={{
-                  width: "max-content",
-                  color:
-                    theme.palette.mode === "light"
-                      ? "#080707"
-                      : theme.palette.text.primary,
-                }}
-              >
-                {el.icon}
-              </IconButton>
-            )
-          )}
-          <Divider sx={{ width: 48 }} />
-          {Nav_Setting.map((el) =>
-            el.index === selected ? (
-              <Box
-                key={el.index}
-                sx={{
-                  backgroundColor: theme.palette.primary.main,
-                  borderRadius: 1.5,
-                }}
-                p={0.5}
-              >
+              );
+            })}
+            <Divider sx={{ width: 48 }} />
+            {Nav_Setting.map((el) => {
+              return el.index == selectedTab ? (
+                <Box
+                  sx={{
+                    backgroundColor: theme.palette.primary.main,
+                    borderRadius: 1.5,
+                  }}
+                  p={1}
+                >
+                  <IconButton
+                    onClick={() => {
+                      handleChangeTab(el.index);
+                    }}
+                    sx={{ width: "max-content", color: "#ffffff" }}
+                  >
+                    {el.icon}
+                  </IconButton>
+                </Box>
+              ) : (
                 <IconButton
                   onClick={() => {
-                    setSelected(el.index);
+                    handleChangeTab(el.index);
+
+                    // dispatch(UpdateTab(el.index));
                   }}
-                  sx={{ width: "max-content", color: "#ffffff" }}
+                  sx={{
+                    width: "max-content",
+                    color:
+                      theme.palette.mode === "light"
+                        ? "#080707"
+                        : theme.palette.text.primary,
+                  }}
                 >
                   {el.icon}
                 </IconButton>
-              </Box>
-            ) : (
-              <IconButton
-                key={el.index}
-                onClick={() => {
-                  setSelected(el.index);
-                }}
-                sx={{
-                  width: "max-content",
-                  color:
-                    theme.palette.mode === "light"
-                      ? "#080707"
-                      : theme.palette.text.primary,
-                }}
-              >
-                {el.icon}
-              </IconButton>
-            )
-          )}
-        </Stack>
+              );
+            })}
+          </Stack>
         <Stack>
           {/* Profile Menu */}
           <ProfileMenu />

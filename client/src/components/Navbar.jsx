@@ -6,6 +6,7 @@ import { MenuRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/reducers/userSlice";
+import ProfileMenu from "../chatting/layouts/dashboard/ProfileMenu";
 
 const Nav = styled.div`
   background-color: ${({ theme }) => theme.bg};
@@ -158,8 +159,9 @@ const Navbar = ({ currentUser }) => {
         </NavItems>
 
         <UserContainer>
-          <Avatar src={currentUser?.img}>{currentUser?.firstName[0]}</Avatar>
-          <TextButton onClick={() => dispatch(logout())}>Logout</TextButton>
+          {/* <Avatar src={currentUser?.img}>{currentUser?.firstName[0]}</Avatar>
+          <TextButton onClick={() => dispatch(logout())}>Logout</TextButton> */}
+          <ProfileMenu/>
         </UserContainer>
       </NavContainer>
     </Nav>
