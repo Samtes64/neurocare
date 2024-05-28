@@ -4,6 +4,8 @@ import storage from 'redux-persist/lib/storage';
 import appReducer from './reducers/app';
 import { User } from 'phosphor-react';
 import userReducer from "./reducers/userSlice"
+import audioCallReducer from "./reducers/audioCall"
+import videoCallReducer from "./reducers/videoCall"
 
 
 // ----------------------------------------------------------------------
@@ -19,6 +21,8 @@ const rootPersistConfig = {
 const rootReducer = combineReducers({
   app: appReducer,
   user: userReducer,
+  audioCall: audioCallReducer,
+  videoCall: videoCallReducer,
  
 });
 

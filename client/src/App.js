@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import ResetPassword from "./pages/ResetPassword";
 import NewPassword from "./pages/NewPassword";
 import Group from "./chatting/pages/dashboard/Group";
+import Call from "./chatting/pages/dashboard/Call";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -56,6 +57,7 @@ function App() {
               <Route path="/chat/*" element={<DashboardLayout />}>
                 <Route index element={<GeneralApp />} />
                 <Route path="group" element={<Group />} />
+                <Route path="call" element={<Call />} />
 
                 <Route path="404" element={<Page404 />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
