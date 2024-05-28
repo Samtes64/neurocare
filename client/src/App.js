@@ -14,6 +14,8 @@ import Page404 from "./chatting/pages/Page404";
 import { Suspense,lazy } from "react";
 import LoadingScreen from "./chatting/components/LoadingScreen";
 import Settings from "./pages/Settings";
+import ResetPassword from "./pages/ResetPassword";
+import NewPassword from "./pages/NewPassword";
 
 
 const Loadable = (Component) => (props) => {
@@ -78,6 +80,9 @@ function App() {
                 element={<Authentication loginProp={true} />}
               />
               <Route path="/assessment" exact element={<Assessment />} />
+              <Route path="/forgotpassword" exact element={<ResetPassword />} />
+              <Route path="/newpassword" exact element={<NewPassword />} />
+              
             </Routes>
           </Container>
         )}

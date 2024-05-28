@@ -91,5 +91,19 @@ const initialState = {
       dispatch(slice.actions.updateTab(tab));
     };
   }
+  export const showSnackbar =
+  ({ severity, message }) =>
+  async (dispatch, getState) => {
+    dispatch(
+      slice.actions.openSnackBar({
+        message,
+        severity,
+      })
+    );
+
+    setTimeout(() => {
+      dispatch(slice.actions.closeSnackBar());
+    }, 4000);
+  };
 
   export default slice.reducer;

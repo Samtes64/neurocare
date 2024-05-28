@@ -5,6 +5,7 @@ import Button from "./Button";
 import { UserSignIn } from "../api";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/reducers/userSlice";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -58,6 +59,16 @@ const SignIn = () => {
     }
   };
 
+  const Text = styled.div`
+    font-size: 16px;
+    
+    color: ${({ theme }) => theme.text_secondary};
+    margin-top: 16px;
+    @media (max-width: 400px) {
+      font-size: 14px;
+    }
+  `;
+
   return (
     <Container>
       <div>
@@ -84,6 +95,9 @@ const SignIn = () => {
           value={password}
           handelChange={(e) => setPassword(e.target.value)}
         />
+        <Link to={"/forgotpassword"}>
+          <Text className="hover:underline underline-offset-1 text-end">Forgot password?</Text>
+        </Link>
         <Button
           text="SignIn"
           onClick={handelSignIn}
