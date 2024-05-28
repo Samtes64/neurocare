@@ -22,6 +22,7 @@ import {
 
 import { useTheme } from "@mui/material/styles";
 import { faker } from "@faker-js/faker";
+import { useNavigate } from "react-router-dom";
 
 
 const Settings = () => {
@@ -45,6 +46,8 @@ const Settings = () => {
   const handleCloseShortcuts = () => {
     setOpenShortcuts(false);
   };
+
+  const navigate = useNavigate();
 
   const list = [
     {
@@ -104,7 +107,7 @@ const Settings = () => {
           <Stack p={4} spacing={5}>
             {/* Header */}
             <Stack direction="row" alignItems={"center"} spacing={3}>
-              <IconButton>
+              <IconButton onClick={() => {navigate("/")}}>
                 <CaretLeft size={24} color={"#4B4B4B"} />
               </IconButton>
 
