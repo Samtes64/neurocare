@@ -18,6 +18,7 @@ import ResetPassword from "./pages/ResetPassword";
 import NewPassword from "./pages/NewPassword";
 import Group from "./chatting/pages/dashboard/Group";
 import Call from "./chatting/pages/dashboard/Call";
+import Profile from "./pages/Profile";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -63,6 +64,7 @@ function App() {
                 <Route path="*" element={<Navigate to="/404" replace />} />
               </Route>
               <Route path="/settings" exact element={<Settings />} />
+              <Route path="/profile" exact element={<Profile />} />
             </Routes>
           </Container>
         ) : (

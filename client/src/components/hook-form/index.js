@@ -1,4 +1,4 @@
-// export * from './RHFUpload';
+export * from './RHFUpload';
 export { default } from './FormProvider';
 
 
