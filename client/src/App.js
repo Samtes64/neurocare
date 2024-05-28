@@ -13,6 +13,7 @@ import DashboardLayout from "./chatting/layouts/dashboard";
 import Page404 from "./chatting/pages/Page404";
 import { Suspense,lazy } from "react";
 import LoadingScreen from "./chatting/components/LoadingScreen";
+import Settings from "./pages/Settings";
 
 
 const Loadable = (Component) => (props) => {
@@ -56,6 +57,7 @@ function App() {
                 <Route path="404" element={<Page404 />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
               </Route>
+              <Route path="/settings" exact element={<Settings />} />
               
             </Routes>
           </Container>
