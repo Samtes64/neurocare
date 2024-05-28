@@ -1,6 +1,6 @@
 import { ThemeProvider, styled } from "styled-components";
 import { lightTheme } from "./utils/Themes";
-import { BrowserRouter, Route, Routes,Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Authentication from "./pages/Authentication";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,12 +11,12 @@ import Homepage from "./pages/Hero";
 import Assessment from "./pages/Assessment";
 import DashboardLayout from "./chatting/layouts/dashboard";
 import Page404 from "./chatting/pages/Page404";
-import { Suspense,lazy } from "react";
+import { Suspense, lazy } from "react";
 import LoadingScreen from "./chatting/components/LoadingScreen";
 import Settings from "./pages/Settings";
 import ResetPassword from "./pages/ResetPassword";
 import NewPassword from "./pages/NewPassword";
-
+import Group from "./chatting/pages/dashboard/Group";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -26,10 +26,9 @@ const Loadable = (Component) => (props) => {
   );
 };
 
-
 const GeneralApp = Loadable(
-  lazy(()=>import("../src/chatting/pages/dashboard/GeneralApp"))
-)
+  lazy(() => import("../src/chatting/pages/dashboard/GeneralApp"))
+);
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -50,17 +49,18 @@ function App() {
         {currentUser ? (
           <Container>
             <Navbar currentUser={currentUser} />
-            
+
             <Routes>
               <Route path="/" exact element={<Dashboard />} />
               <Route path="/workouts" exact element={<Workouts />} />
               <Route path="/chat/*" element={<DashboardLayout />}>
                 <Route index element={<GeneralApp />} />
+                <Route path="group" element={<Group />} />
+
                 <Route path="404" element={<Page404 />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
               </Route>
               <Route path="/settings" exact element={<Settings />} />
-              
             </Routes>
           </Container>
         ) : (
@@ -82,7 +82,6 @@ function App() {
               <Route path="/assessment" exact element={<Assessment />} />
               <Route path="/forgotpassword" exact element={<ResetPassword />} />
               <Route path="/newpassword" exact element={<NewPassword />} />
-              
             </Routes>
           </Container>
         )}

@@ -47,6 +47,7 @@ const SideBar = () => {
   return (
     <Box
       sx={{
+        height: "100vh",
         width: 100,
         backgroundColor:
           theme.palette.mode === "light"
