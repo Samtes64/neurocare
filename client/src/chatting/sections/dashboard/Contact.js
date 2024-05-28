@@ -28,6 +28,8 @@ import {
 } from "phosphor-react";
 import useResponsive from "../../hooks/useResponsive";
 import AntSwitch from "../../components/AntSwitch";
+import { useDispatch } from "react-redux";
+import { UpdateSidebarType } from "../../../redux/reducers/app";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -96,7 +98,10 @@ const Contact = () => {
     setOpenDelete(false);
   }
 
+  const dispatch = useDispatch()
+
   return (
+    
     <Box sx={{ width: !isDesktop ? "100vw" : 320, maxHeight: "100vh" }}>
       <Stack sx={{ height: "100%" }}>
         <Box
@@ -184,7 +189,9 @@ const Contact = () => {
           >
             <Typography variant="subtitle2">Media, Links & Docs</Typography>
             <Button
-             
+              onClick={() => {
+                dispatch(UpdateSidebarType("SHARED"));
+              }}
               endIcon={<CaretRight />}
             >
               401
@@ -209,7 +216,9 @@ const Contact = () => {
             </Stack>
 
             <IconButton
-              
+               onClick={() => {
+                dispatch(UpdateSidebarType("STARRED"));
+              }}
             >
               <CaretRight />
             </IconButton>
