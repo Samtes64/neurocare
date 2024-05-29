@@ -12,6 +12,13 @@ import http from "http";
 dotenv.config();
 
 
+process.on("uncaughtException", (err) => {
+  console.log(err);
+  console.log("UNCAUGHT Exception! Shutting down ...");
+  process.exit(1); // Exit Code 1 indicates that a container shut down, either because of an application failure.
+});
+
+
 const server = http.createServer(app)
 
 
@@ -57,3 +64,13 @@ const startServer = async () => {
 };
 
 startServer();
+
+
+process.on("unhandledRejection", (err) => {
+  console.log(err);
+  console.log("UNHANDLED REJECTION! Shutting down ...");
+  server.close(() => {
+    process.exit(1); //  Exit Code 1 indicates that a container shut down, either because of an application failure.
+  });
+});
+

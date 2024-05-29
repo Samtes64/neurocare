@@ -5,7 +5,7 @@ import rateLimit from "express-rate-limit"; // Basic rate-limiting middleware fo
 import helmet from "helmet";
 import mongosanitize from "express-mongo-sanitize";
 import bodyParser from "body-parser";
-import xss from "xss"
+import xss from "xss";
 
 const app = express();
 
