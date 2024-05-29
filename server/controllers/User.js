@@ -7,8 +7,7 @@ import Workout from "../models/Workout.js";
 import Patient from "../models/Patient.js";
 import Therapist from "../models/Therapist.js";
 
-
-
+const signToken = (userId) => jwt.sign({ userId }, process.env.JWT);
 
 dotenv.config();
 
@@ -102,7 +101,6 @@ export const UserLogin = async (req, res, next) => {
     return next(error);
   }
 };
-
 
 export const getUserDashboard = async (req, res, next) => {
   try {
