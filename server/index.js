@@ -5,6 +5,7 @@ import UserRoutes from "./routes/User.js";
 import TreatmentRoutes from "./routes/Treatment.js"
 
 import http from "http";
+import DoneTaskRoutes from "./routes/DoneTask.js"
 
 
 
@@ -26,6 +27,8 @@ const server = http.createServer(app)
 app.use("/api/user/", UserRoutes);
 
 app.use("/api/treatment",TreatmentRoutes)
+
+app.use("/api/tasks/",DoneTaskRoutes)
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;
