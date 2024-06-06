@@ -16,7 +16,7 @@ export const addDoneTask = async (req, res, next) => {
 
     try {
       // Check for existing patient with the same userId
-      const patient = await Patient.findById(userId);
+      const patient = await Patient.findOne({user: userId})
 
       if (!patient) {
         return next(
@@ -39,7 +39,7 @@ export const addDoneTask = async (req, res, next) => {
       return res.status(201).json(savedDoneTask);
     } catch (error) {
       return next(
-        createError(500, "An error occurred while checking for the patient.")
+        createError(500, error)
       );
     }
   } catch (error) {

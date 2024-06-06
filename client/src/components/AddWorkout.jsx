@@ -1,9 +1,8 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TextInput from "./TextInput";
-import Button from "./Button"; 
-import { getAllTreatments } from "../api";
-
+import Button from "./Button";
+import { addDoneTask, getAllTreatments } from "../api";
 
 const Card = styled.div`
   flex: 1;
@@ -72,22 +71,28 @@ const StickerRating = styled.div`
   gap: 8px;
 `;
 
-
-
 const AddDoneTask = ({ addNewTask, buttonLoading }) => {
   const [treatment, setTreatment] = useState("");
-  const [treatments, setTreatments] = useState([])
+  const [treatments, setTreatments] = useState([]);
   const [duration, setDuration] = useState("");
   const [mood, setMood] = useState(0);
   const [note, setNote] = useState("");
 
+  const validateInputs = () => {
+    if (!treatment || !duration || !mood) {
+      alert("Please fill in all fields");
+      return false;
+    }
+    return true;
+  };
+
   const token = localStorage.getItem("fittrack-app-token");
-  
+
   useEffect(() => {
     const fetchTreatments = async () => {
       try {
         const response = await getAllTreatments(token);
-        
+
         const data = await response.data;
         setTreatments(data);
         console.log("Fetched data:", data);
@@ -99,8 +104,18 @@ const AddDoneTask = ({ addNewTask, buttonLoading }) => {
     fetchTreatments();
   }, [token]);
 
-  const handleAddTask = () => {
-    addNewTask({ treatment, duration, mood, note });
+  const handleAddTask = async () => {
+    // addNewTask({ treatment, duration, mood, note });
+
+    if (validateInputs()) {
+      await addDoneTask(token, { treatment, duration, mood, note })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
+        });
+    }
   };
 
   const stickers = ["😢", "😟", "😐", "😊", "😃"];
@@ -109,9 +124,13 @@ const AddDoneTask = ({ addNewTask, buttonLoading }) => {
     <Card>
       <Title>Add Done Task</Title>
       <Select value={treatment} onChange={(e) => setTreatment(e.target.value)}>
-        <option value="" disabled>Select Treatment</option>
+        <option value="" disabled>
+          Select Treatment
+        </option>
         {treatments.map((t) => (
-          <option >{t.treatmentName}</option>
+          <option key={t._id} value={t._id}>
+            {t.treatmentName}
+          </option>
         ))}
       </Select>
       <TextInput
