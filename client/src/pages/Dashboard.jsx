@@ -4,9 +4,14 @@ import { counts } from "../utils/data";
 import CountsCard from "../components/cards/CountsCard";
 import WeeklyStatCard from "../components/cards/WeeklyStatCard";
 import CategoryChart from "../components/cards/CategoryChart";
-import AddWorkout from "../components/AddWorkout";
+import AddDoneTask from "../components/AddDoneTask";
 import WorkoutCard from "../components/cards/WorkoutCard";
-import { addWorkout, getDashboardDetails, getWorkouts } from "../api";
+import {
+  addDoneTask,
+  addWorkout,
+  getDashboardDetails,
+  getWorkouts,
+} from "../api";
 
 const Container = styled.div`
   flex: 1;
@@ -68,11 +73,24 @@ const Dashboard = () => {
   const [data, setData] = useState();
   const [buttonLoading, setButtonLoading] = useState(false);
   const [todaysWorkouts, setTodaysWorkouts] = useState([]);
-  const [workout, setWorkout] = useState(`#Legs
--Back Squat
--5 setsX15 reps
--30 kg
--10 min`);
+  const [treatment, setTreatment] = useState("");
+  const [duration, setDuration] = useState("");
+  const [mood, setMood] = useState(0);
+  const [note, setNote] = useState("");
+
+  const validateInputs = () => {
+    if (!treatment || !duration || !mood) {
+      alert("Please fill in all fields");
+      setButtonLoading(false);
+      return false;
+    }
+    if (isNaN(duration) || duration <= 0) {
+      alert("Please enter a valid number for duration");
+      setButtonLoading(false);
+      return false;
+    }
+    return true;
+  };
 
   const dashboardData = async () => {
     setLoading(true);
@@ -93,18 +111,21 @@ const Dashboard = () => {
     });
   };
 
-  const addNewWorkout = async () => {
+  const addNewDoneTask = async () => {
     setButtonLoading(true);
     const token = localStorage.getItem("fittrack-app-token");
-    await addWorkout(token, { workoutString: workout })
-      .then((res) => {
-        dashboardData();
-        getTodaysWorkout();
-        setButtonLoading(false);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+
+    if (validateInputs()) {
+      await addDoneTask(token, { treatment, duration, mood, note })
+        .then((res) => {
+          dashboardData();
+          getTodaysWorkout();
+          setButtonLoading(false);
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }
   };
 
   useEffect(() => {
@@ -124,11 +145,16 @@ const Dashboard = () => {
         <FlexWrap>
           <WeeklyStatCard data={data} />
           <CategoryChart data={data} />
-          <AddWorkout
-            workout={workout}
-            setWorkout={setWorkout}
-            addNewWorkout={addNewWorkout}
+          <AddDoneTask
+            treatment={treatment}
+            setTreatment={setTreatment}
+            duration={duration}
+            setDuration={setDuration}
+            mood={mood}
+            setMood={setMood}
+            addNewDoneTask={addNewDoneTask}
             buttonLoading={buttonLoading}
+            validateInputs={validateInputs}
           />
         </FlexWrap>
 

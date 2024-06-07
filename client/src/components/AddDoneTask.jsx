@@ -71,20 +71,10 @@ const StickerRating = styled.div`
   gap: 8px;
 `;
 
-const AddDoneTask = ({ addNewTask, buttonLoading }) => {
-  const [treatment, setTreatment] = useState("");
+const AddDoneTask = ({treatment,duration,mood,note,setTreatment,setDuration,setMood,setNote, addNewDoneTask, buttonLoading , validateInputs}) => {
   const [treatments, setTreatments] = useState([]);
-  const [duration, setDuration] = useState("");
-  const [mood, setMood] = useState(0);
-  const [note, setNote] = useState("");
 
-  const validateInputs = () => {
-    if (!treatment || !duration || !mood) {
-      alert("Please fill in all fields");
-      return false;
-    }
-    return true;
-  };
+
 
   const token = localStorage.getItem("fittrack-app-token");
 
@@ -104,20 +94,7 @@ const AddDoneTask = ({ addNewTask, buttonLoading }) => {
     fetchTreatments();
   }, [token]);
 
-  const handleAddTask = async () => {
-    // addNewTask({ treatment, duration, mood, note });
-
-    if (validateInputs()) {
-      await addDoneTask(token, { treatment, duration, mood, note })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          alert(err.response.data.message);
-        });
-    }
-  };
-
+  
   const stickers = ["😢", "😟", "😐", "😊", "😃"];
 
   return (
@@ -163,7 +140,7 @@ const AddDoneTask = ({ addNewTask, buttonLoading }) => {
       <Button
         text="Add Task"
         small
-        onClick={handleAddTask}
+        onClick={addNewDoneTask}
         isLoading={buttonLoading}
         isDisabled={buttonLoading}
       />
