@@ -19,6 +19,7 @@ import NewPassword from "./pages/NewPassword";
 import Group from "./chatting/pages/dashboard/Group";
 import Call from "./chatting/pages/dashboard/Call";
 import Profile from "./pages/Profile";
+import Todos from "./pages/Todos";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -55,6 +56,7 @@ function App() {
             <Routes>
               <Route path="/" exact element={<Dashboard />} />
               <Route path="/donetasks" exact element={<DoneTasks />} />
+              <Route path="/todos" exact element={<Todos/>}/>
               <Route path="/chat/*" element={<DashboardLayout />}>
                 <Route index element={<GeneralApp />} />
                 <Route path="group" element={<Group />} />

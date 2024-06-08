@@ -144,7 +144,7 @@ const Navbar = ({ currentUser }) => {
 
         <MobileMenu isOpen={isOpen}>
           <Navlink to="/">Dashboard</Navlink>
-          <Navlink to="/workouts">Workouts</Navlink>
+          <Navlink to="/todos">Todos</Navlink>
           <Navlink to="/chat">chat</Navlink>
           <Navlink to="/blogs">Blogs</Navlink>
           <Navlink to="/contact">Contact</Navlink>
@@ -152,7 +152,7 @@ const Navbar = ({ currentUser }) => {
 
         <NavItems>
           <Navlink to="/">Dashboard</Navlink>
-          <Navlink to="/workouts">Workouts</Navlink>
+          <Navlink to="/todos">Todos</Navlink>
           <Navlink to="/chat">chat</Navlink>
           <Navlink to="/blogs">Blogs</Navlink>
           <Navlink to="/contact">Contact</Navlink>

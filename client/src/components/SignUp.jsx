@@ -5,6 +5,7 @@ import Button from "./Button";
 import { UserSignUp } from "../api";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/reducers/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -33,6 +34,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("patient")
+  const navigate = useNavigate();
 
   const validateInputs = () => {
     if (!firstName || !lastName || !email || !password) {
@@ -52,6 +54,7 @@ const SignUp = () => {
           alert("Account Created Success");
           setLoading(false);
           setButtonDisabled(false);
+          navigate("/");
         })
         .catch((err) => {
           alert(err.response.data.message);
