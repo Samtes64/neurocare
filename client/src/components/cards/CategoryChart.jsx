@@ -16,6 +16,7 @@ const Card = styled.div`
     padding: 16px;
   }
 `;
+
 const Title = styled.div`
   font-weight: 600;
   font-size: 16px;
@@ -25,24 +26,39 @@ const Title = styled.div`
   }
 `;
 
+const ChartContainer = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const CategoryChart = ({ data }) => {
   return (
     <Card>
-      <Title>Weekly Calories Burned</Title>
-      {data?.pieChartData && (
-        <PieChart
-          series={[
-            {
-              data: data?.pieChartData,
-              innerRadius: 30,
-              outerRadius: 120,
-              paddingAngle: 5,
-              cornerRadius: 5,
-            },
-          ]}
-          height={300}
-        />
-      )}
+      <Title>Weekly Done Tasks by category</Title>
+      <ChartContainer>
+        {data?.pieChartData && (
+          <PieChart
+            series={[
+              {
+                data: data?.pieChartData,
+                innerRadius: 30,
+                outerRadius: 120,
+                paddingAngle: 5,
+                cornerRadius: 5,
+                highlightScope: { faded: 'global', highlighted: 'item' },
+                faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+              },
+            ]}
+            slotProps={{
+              legend: { hidden: true },
+            }}
+            width={300}
+            height={300}
+          />
+        )}
+      </ChartContainer>
     </Card>
   );
 };

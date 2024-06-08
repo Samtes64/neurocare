@@ -81,14 +81,18 @@ const Desc = styled.div`
 `;
 
 const CountsCard = ({ item, data }) => {
+
+  const value = data && data[item.key] !== undefined ? data[item.key].toFixed(1) : '0';
+
+
   return (
     <Card>
       <Left>
         <Title>{item.name}</Title>
         <Value>
-          {data && data[item.key].toFixed(2)}
+         {value}
           <Unit>{item.unit}</Unit>
-          <Span positive>(+10%)</Span>
+          {/* <Span positive>(+10%)</Span> */}
         </Value>
         <Desc>{item.desc}</Desc>
       </Left>

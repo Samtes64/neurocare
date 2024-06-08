@@ -13,7 +13,7 @@ export const getAllTreatments = async (token) =>
   });
 
 export const getDashboardDetails = async (token) =>
-  API.get("/user/dashboard", {
+  API.get("/patient/dashboard", {
     headers: { Authorization: `Bearer ${token}` },
   });
 

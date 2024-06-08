@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import UserRoutes from "./routes/User.js";
 import TreatmentRoutes from "./routes/Treatment.js"
+import PatientRoutes from "./routes/Patient.js"
 
 import http from "http";
 import DoneTaskRoutes from "./routes/DoneTask.js"
@@ -29,6 +30,8 @@ app.use("/api/user/", UserRoutes);
 app.use("/api/treatment",TreatmentRoutes)
 
 app.use("/api/tasks/",DoneTaskRoutes)
+
+app.use("/api/patient", PatientRoutes)
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;

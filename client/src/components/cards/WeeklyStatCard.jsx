@@ -28,13 +28,13 @@ const Title = styled.div`
 const WeeklyStatCard = ({ data }) => {
   return (
     <Card>
-      <Title>Weekly Calories Burned</Title>
-      {data?.totalWeeksCaloriesBurnt && (
+      <Title>Weekly Done tasks</Title>
+      {data?.totalWeeksTaskDuration && (
         <BarChart
           xAxis={[
-            { scaleType: "band", data: data?.totalWeeksCaloriesBurnt?.weeks },
+            { scaleType: "band", data: data?.totalWeeksTaskDuration?.weeks },
           ]}
-          series={[{ data: data?.totalWeeksCaloriesBurnt?.caloriesBurned }]}
+          series={[{ data: data?.totalWeeksTaskDuration?.spentTime }]}
           height={300}
         />
       )}
