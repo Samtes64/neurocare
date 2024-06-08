@@ -36,7 +36,7 @@ const ChartContainer = styled.div`
 const CategoryChart = ({ data }) => {
   return (
     <Card>
-      <Title>Weekly Done Tasks by category</Title>
+      <Title>Daily Done Tasks by category</Title>
       <ChartContainer>
         {data?.pieChartData && (
           <PieChart
