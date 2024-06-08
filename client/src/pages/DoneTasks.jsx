@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import WorkoutCard from "../components/cards/WorkoutCard";
+import TaskCard from "../components/cards/TaskCard";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers";
-import { getWorkouts } from "../api";
+import { getDoneTasks } from "../api";
 import { CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
 
@@ -72,24 +72,24 @@ const SecTitle = styled.div`
   font-weight: 500;
 `;
 
-const Workouts = () => {
+const DoneTasks = () => {
   const dispatch = useDispatch();
-  const [todaysWorkouts, setTodaysWorkouts] = useState([]);
+  const [todaysTasks, setTodaysTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState("");
 
-  const getTodaysWorkout = async () => {
+  const getTodaysDoneTasks = async () => {
     setLoading(true);
     const token = localStorage.getItem("fittrack-app-token");
-    await getWorkouts(token, date ? `?date=${date}` : "").then((res) => {
-      setTodaysWorkouts(res?.data?.todaysWorkouts);
+    await getDoneTasks(token, date ? `?date=${date}` : "").then((res) => {
+      setTodaysTasks(res?.data?.todaysDoneTasks);
       console.log(res.data);
       setLoading(false);
     });
   };
 
   useEffect(() => {
-    getTodaysWorkout();
+    getTodaysDoneTasks();
   }, [date]);
   return (
     <Container>
@@ -104,13 +104,13 @@ const Workouts = () => {
         </Left>
         <Right>
           <Section>
-            <SecTitle>Todays Workout</SecTitle>
+            <SecTitle>Done tasks</SecTitle>
             {loading ? (
               <CircularProgress />
             ) : (
               <CardWrapper>
-                {todaysWorkouts.map((workout) => (
-                  <WorkoutCard workout={workout} />
+                {todaysTasks.map((task) => (
+                  <TaskCard task={task} />
                 ))}
               </CardWrapper>
             )}
@@ -121,4 +121,4 @@ const Workouts = () => {
   );
 };
 
-export default Workouts;
+export default DoneTasks;

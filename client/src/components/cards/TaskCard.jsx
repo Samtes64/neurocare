@@ -51,26 +51,26 @@ const Details = styled.div`
   gap: 6px;
 `;
 
-const WorkoutCard = ({ workout }) => {
+const TaskCard = ({ task }) => {
   return (
     <Card>
-      <Category>#{workout?.category}</Category>
-      <Name>{workout?.workoutName}</Name>
-      <Sets>
-        Count: {workout?.sets} sets X {workout?.reps} reps
-      </Sets>
+      <Category>#{task?.category}</Category>
+      <Name>{task?.treatment}</Name>
+      {/* <Sets>
+        Count: {task?.sets} sets X {task?.reps} reps
+      </Sets> */}
       <Flex>
-        <Details>
+        {/* <Details>
           <FitnessCenterRounded sx={{ fontSize: "20px" }} />
-          {workout?.weight} kg
-        </Details>
+          {task?.weight} kg
+        </Details> */}
         <Details>
           <TimelapseRounded sx={{ fontSize: "20px" }} />
-          {workout?.duration} min
+          {task?.duration} min
         </Details>
       </Flex>
     </Card>
   );
 };
 
-export default WorkoutCard;
+export default TaskCard;

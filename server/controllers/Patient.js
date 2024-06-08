@@ -68,30 +68,28 @@ export const getPatientDashboard = async (req, res, next) => {
       // Lookup to join treatments data
       {
         $lookup: {
-          from: 'treatments',
-          localField: 'treatment',
-          foreignField: '_id',
-          as: 'treatmentDetails',
+          from: "treatments",
+          localField: "treatment",
+          foreignField: "_id",
+          as: "treatmentDetails",
         },
       },
       {
-        $unwind: '$treatmentDetails',
+        $unwind: "$treatmentDetails",
       },
-      
 
       {
         $lookup: {
-          from: 'treatmentcategories',
-          localField: 'treatmentDetails.treatmentCategory',
-          foreignField: '_id',
-          as: 'categoryDetails',
+          from: "treatmentcategories",
+          localField: "treatmentDetails.treatmentCategory",
+          foreignField: "_id",
+          as: "categoryDetails",
         },
       },
       {
-        $unwind: '$categoryDetails',
+        $unwind: "$categoryDetails",
       },
-      
-     
+
       {
         $group: {
           _id: "$categoryDetails.categoryName",
@@ -99,7 +97,6 @@ export const getPatientDashboard = async (req, res, next) => {
         },
       },
     ]);
-
 
     //Format category data for pie chart
 
@@ -163,6 +160,84 @@ export const getPatientDashboard = async (req, res, next) => {
       },
       pieChartData: pieChartData,
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getDoneTasksByDate = async (req, res, next) => {
+  try {
+    const userId = req.user?.id;
+
+    const patient = await Patient.findOne({ user: userId });
+
+    if (!patient) {
+      return next(
+        createError(404, "No patient found with the provided userId.")
+      );
+    }
+
+    let date = req.query.date ? new Date(req.query.date) : new Date();
+
+    const startOfDay = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    const endOfDay = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + 1
+    );
+
+    const todaysDoneTasks = await DoneTasks.aggregate([
+      {
+        $match: {
+          patient: patient._id,
+          createdAt: { $gte: startOfDay, $lt: endOfDay },
+        },
+      },
+      {
+        $lookup: {
+          from: "treatments",
+          localField: "treatment",
+          foreignField: "_id",
+          as: "treatmentDetails",
+        },
+      },
+      {
+        $unwind: "$treatmentDetails",
+      },
+      {
+        $lookup: {
+          from: "treatmentcategories",
+          localField: "treatmentDetails.treatmentCategory",
+          foreignField: "_id",
+          as: "categoryDetails",
+        },
+      },
+      {
+        $unwind: "$categoryDetails",
+      },
+      {
+        $project: {
+          // Include the fields you want to show
+          _id: 1, // assuming you want the id of the done task
+          treatment: "$treatmentDetails.treatmentName", // assuming treatmentDetails has a 'name' field
+          category: "$categoryDetails.categoryName", // assuming categoryDetails has a 'name' field
+          duration: 1,
+          note: 1,
+          createdAt: 1,
+        },
+      },
+    ]);
+
+    const totalSpentTime = todaysDoneTasks.reduce(
+      (total, doneTasks) => total + doneTasks.duration,
+      0
+    );
+
+    return res.status(200).json({ todaysDoneTasks, totalSpentTime });
   } catch (err) {
     next(err);
   }

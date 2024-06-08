@@ -17,8 +17,8 @@ export const getDashboardDetails = async (token) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-export const getWorkouts = async (token, date) =>
-  await API.get(`/user/workout${date}`, {
+export const getDoneTasks = async (token, date) =>
+  await API.get(`/patient/donetask${date}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 

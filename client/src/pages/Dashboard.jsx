@@ -5,13 +5,14 @@ import CountsCard from "../components/cards/CountsCard";
 import WeeklyStatCard from "../components/cards/WeeklyStatCard";
 import CategoryChart from "../components/cards/CategoryChart";
 import AddDoneTask from "../components/AddDoneTask";
-import WorkoutCard from "../components/cards/WorkoutCard";
+import TaskCard from "../components/cards/TaskCard";
 import {
   addDoneTask,
-  addWorkout,
+  
   getDashboardDetails,
-  getWorkouts,
+  getDoneTasks,
 } from "../api";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   flex: 1;
@@ -68,11 +69,30 @@ const CardWrapper = styled.div`
   }
 `;
 
+const Button = styled.button`
+  position: relative;
+  bottom: 60px;
+  right: 20px;
+  padding: 8px 16px;
+  background: ${({ theme }) => theme.primary};
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100px;
+  justify-content: end;
+
+  &:hover {
+    background: ${({ theme }) => theme.primaryHover};
+  }
+`;
+
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState();
   const [buttonLoading, setButtonLoading] = useState(false);
-  const [todaysWorkouts, setTodaysWorkouts] = useState([]);
+  const [todaysTasks, setTodaysTasks] = useState([]);
   const [treatment, setTreatment] = useState("");
   const [duration, setDuration] = useState("");
   const [mood, setMood] = useState(0);
@@ -101,11 +121,11 @@ const Dashboard = () => {
       setLoading(false);
     });
   };
-  const getTodaysWorkout = async () => {
+  const getTodaysTasks = async () => {
     setLoading(true);
     const token = localStorage.getItem("fittrack-app-token");
-    await getWorkouts(token, "").then((res) => {
-      setTodaysWorkouts(res?.data?.todaysWorkouts);
+    await getDoneTasks(token, "").then((res) => {
+      setTodaysTasks(res?.data?.todaysDoneTasks);
       console.log(res.data);
       setLoading(false);
     });
@@ -119,7 +139,7 @@ const Dashboard = () => {
       await addDoneTask(token, { treatment, duration, mood, note })
         .then((res) => {
           dashboardData();
-          getTodaysWorkout();
+          getTodaysTasks();
           setButtonLoading(false);
         })
         .catch((err) => {
@@ -130,7 +150,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dashboardData();
-    getTodaysWorkout();
+    getTodaysTasks();
   }, []);
   return (
     <Container>
@@ -159,12 +179,15 @@ const Dashboard = () => {
         </FlexWrap>
 
         <Section>
-          <Title>Todays Workouts</Title>
+          <Title>Todays Done Tasks</Title>
           <CardWrapper>
-            {todaysWorkouts.map((workout) => (
-              <WorkoutCard workout={workout} />
+            {todaysTasks.map((task) => (
+              <TaskCard task={task} />
             ))}
           </CardWrapper>
+          <Link to={"/donetasks"}>
+            <Button className="mx-10">Get More</Button>
+          </Link>
         </Section>
       </Wrapper>
     </Container>

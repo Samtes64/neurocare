@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
-import Workouts from "./pages/Workouts";
+import DoneTasks from "./pages/DoneTasks";
 import Homepage from "./pages/Hero";
 import Assessment from "./pages/Assessment";
 import DashboardLayout from "./chatting/layouts/dashboard";
@@ -54,7 +54,7 @@ function App() {
 
             <Routes>
               <Route path="/" exact element={<Dashboard />} />
-              <Route path="/workouts" exact element={<Workouts />} />
+              <Route path="/donetasks" exact element={<DoneTasks />} />
               <Route path="/chat/*" element={<DashboardLayout />}>
                 <Route index element={<GeneralApp />} />
                 <Route path="group" element={<Group />} />
