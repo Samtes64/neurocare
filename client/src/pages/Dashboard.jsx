@@ -9,10 +9,13 @@ import TaskCard from "../components/cards/TaskCard";
 import {
   addDoneTask,
   
+  addPayment,
+  
   getDashboardDetails,
   getDoneTasks,
 } from "../api";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
   flex: 1;
@@ -98,6 +101,8 @@ const Dashboard = () => {
   const [mood, setMood] = useState(0);
   const [note, setNote] = useState("");
 
+
+
   const validateInputs = () => {
     if (!treatment || !duration || !mood) {
       alert("Please fill in all fields");
@@ -131,6 +136,29 @@ const Dashboard = () => {
     });
   };
 
+  const handlePayment = async () => {
+    try {
+      const data = await addPayment();
+      if (data && data.checkout_url) {
+        window.location.href = data.checkout_url;
+      }
+    } catch (error) {
+      console.error("Payment initiation failed", error);
+    }
+  };
+
+  const checkout = async () => {
+    await axios
+      .get("http://localhost:3003/api/payment/addpayment", {
+        rdurl: "http://localhost:3000",
+      })
+      .then((res) => {
+        console.log(res);
+        const chekouturl = res?.data?.detail?.data?.checkout_url;
+        chekouturl && window.location.replace(chekouturl);
+      });
+  };
+
   const addNewDoneTask = async () => {
     setButtonLoading(true);
     const token = localStorage.getItem("fittrack-app-token");
@@ -148,6 +176,7 @@ const Dashboard = () => {
     }
   };
 
+  
   useEffect(() => {
     dashboardData();
     getTodaysTasks();
@@ -188,6 +217,7 @@ const Dashboard = () => {
           <Link to={"/donetasks"}>
             <Button className="mx-10">Get More</Button>
           </Link>
+          <Button onClick={checkout} className="mx-10">payment</Button>
         </Section>
       </Wrapper>
     </Container>

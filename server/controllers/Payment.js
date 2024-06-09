@@ -32,12 +32,26 @@ export const addPayment = async (req, res) => {
   };
 
   // post request to chapa
-  await axios
-    .post(CHAPA_URL, data, config)
-    .then((response) => {
-      res.redirect(response.data.data.checkout_url);
-    })
-    .catch((err) => console.log(err));
+  //   await axios
+  //     .post(CHAPA_URL, data, config)
+  //     .then((response) => {
+  //       res.redirect(response.data.data.checkout_url);
+  //     })
+  //     .catch((err) => console.log(err));
+
+  //
+
+  try {
+    const response = await axios.post(CHAPA_URL, data, {
+      headers: {
+        Authorization: `Bearer ${CHAPA_AUTH}`,
+        "Content-Type": "application/json",
+      },
+    });
+    res.json({ detail: response.data });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 export const verifyPayment = async (req, res) => {
@@ -51,6 +65,6 @@ export const verifyPayment = async (req, res) => {
     .catch((err) => console.log("Payment can't be verfied", err));
 };
 
-export const paymentSuccess = async(req,res)=>{
-    res.render("success");
-}
+export const paymentSuccess = async (req, res) => {
+  res.render("success");
+};

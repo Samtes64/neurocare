@@ -32,4 +32,6 @@ export const addDoneTask = async (token, data) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-
+export const addPayment = async () => {
+  await API.get("/payment/addpayment");
+};
