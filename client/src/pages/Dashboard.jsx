@@ -8,14 +8,14 @@ import AddDoneTask from "../components/AddDoneTask";
 import TaskCard from "../components/cards/TaskCard";
 import {
   addDoneTask,
-  
   addPayment,
-  
   getDashboardDetails,
   getDoneTasks,
 } from "../api";
 import { Link } from "react-router-dom";
 import axios from "axios";
+
+import SubscriptionModal from "../components/SubscriptionModal";
 
 const Container = styled.div`
   flex: 1;
@@ -100,8 +100,7 @@ const Dashboard = () => {
   const [duration, setDuration] = useState("");
   const [mood, setMood] = useState(0);
   const [note, setNote] = useState("");
-
-
+  const [showModal, setShowModal] = useState(true); // State to control modal visibility
 
   const validateInputs = () => {
     if (!treatment || !duration || !mood) {
@@ -176,7 +175,14 @@ const Dashboard = () => {
     }
   };
 
-  
+  const handleSubscriptionSelect = (plan) => {
+    setShowModal(false);
+    console.log(plan)
+    if (plan === "paid") {
+      checkout();
+    }
+  };
+
   useEffect(() => {
     dashboardData();
     getTodaysTasks();
@@ -217,8 +223,17 @@ const Dashboard = () => {
           <Link to={"/donetasks"}>
             <Button className="mx-10">Get More</Button>
           </Link>
-          <Button onClick={checkout} className="mx-10">payment</Button>
+          <Button onClick={checkout} className="mx-10">
+            payment
+          </Button>
         </Section>
+
+        {showModal && (
+          <SubscriptionModal
+            onClose={() => setShowModal(false)}
+            onSelect={handleSubscriptionSelect}
+          />
+        )}
       </Wrapper>
     </Container>
   );
