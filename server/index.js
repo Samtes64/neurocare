@@ -2,17 +2,15 @@ import app from "./app.js";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import UserRoutes from "./routes/User.js";
-import TreatmentRoutes from "./routes/Treatment.js"
-import PatientRoutes from "./routes/Patient.js"
+import TreatmentRoutes from "./routes/Treatment.js";
+import PatientRoutes from "./routes/Patient.js";
+import PaymentRoutes from "./routes/Payment.js"
 
 import http from "http";
-import DoneTaskRoutes from "./routes/DoneTask.js"
-
-
+import DoneTaskRoutes from "./routes/DoneTask.js";
 
 
 dotenv.config();
-
 
 process.on("uncaughtException", (err) => {
   console.log(err);
@@ -20,18 +18,17 @@ process.on("uncaughtException", (err) => {
   process.exit(1); // Exit Code 1 indicates that a container shut down, either because of an application failure.
 });
 
-
-const server = http.createServer(app)
-
-
+const server = http.createServer(app);
 
 app.use("/api/user/", UserRoutes);
 
-app.use("/api/treatment",TreatmentRoutes)
+app.use("/api/treatment", TreatmentRoutes);
 
-app.use("/api/tasks/",DoneTaskRoutes)
+app.use("/api/tasks/", DoneTaskRoutes);
 
-app.use("/api/patient", PatientRoutes)
+app.use("/api/patient", PatientRoutes);
+
+app.use("/api/payment/", PaymentRoutes)
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;
@@ -48,6 +45,57 @@ app.get("/", async (req, res) => {
     message: "Hello there",
   });
 });
+
+// trying chapas payment integration
+
+app.set("view engine", "ejs");
+
+
+
+// app.get("/api/pay", async (req, res) => {
+//   // chapa redirect you to this url when payment is successful
+//   const CALLBACK_URL = "http://localhost:3003/api/verify-payment/";
+//   const RETURN_URL = "http://localhost:3000/";
+
+//   // a unique reference given to every transaction
+//   const TEXT_REF = "tx-myecommerce12345-" + Date.now();
+
+//   // form data
+//   const data = {
+//     amount: "100",
+//     currency: "ETB",
+//     email: "ato@Chala.com",
+//     first_name: "Ato",
+//     last_name: "Chala",
+//     tx_ref: TEXT_REF,
+//     callback_url: CALLBACK_URL + TEXT_REF,
+//     return_url: RETURN_URL,
+//   };
+
+//   // post request to chapa
+//   await axios
+//     .post(CHAPA_URL, data, config)
+//     .then((response) => {
+//       res.redirect(response.data.data.checkout_url);
+//     })
+//     .catch((err) => console.log(err));
+// });
+
+// verification endpoint
+// app.get("/api/verify-payment/:id", async (req, res) => {
+//   //verify the transaction
+  
+//   await axios
+//     .get("https://api.chapa.co/v1/transaction/verify/" + req.params.id, config)
+//     .then((response) => {
+//       console.log("Payment was successfully verified");
+//     })
+//     .catch((err) => console.log("Payment can't be verfied", err));
+// });
+
+// app.get("/api/payment-success", async (req, res) => {
+//   res.render("success");
+// });
 
 const connectDB = () => {
   mongoose.set("strictQuery", true);
@@ -71,7 +119,6 @@ const startServer = async () => {
 
 startServer();
 
-
 process.on("unhandledRejection", (err) => {
   console.log(err);
   console.log("UNHANDLED REJECTION! Shutting down ...");
@@ -79,4 +126,3 @@ process.on("unhandledRejection", (err) => {
     process.exit(1); //  Exit Code 1 indicates that a container shut down, either because of an application failure.
   });
 });
-
