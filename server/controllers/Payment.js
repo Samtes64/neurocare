@@ -1,4 +1,7 @@
 import axios from "axios";
+import Patient from "../models/Patient.js";
+import PremiumPatient from "../models/PremiumPatient.js";
+import User from "../models/User.js";
 
 const CHAPA_URL =
   process.env.CHAPA_URL || "https://api.chapa.co/v1/transaction/initialize";
@@ -11,7 +14,7 @@ const config = {
   },
 };
 
-export const addPayment = async (req, res) => {
+export const addPayment = async (req, res, next) => {
   // chapa redirect you to this url when payment is successful
   const CALLBACK_URL = "http://localhost:3003/api/payment/verifypayment/";
   const RETURN_URL = "http://localhost:3000/";
@@ -19,13 +22,15 @@ export const addPayment = async (req, res) => {
   // a unique reference given to every transaction
   const TEXT_REF = "tx-myecommerce12345-" + Date.now();
 
+  const user = await User.findOne({ _id: req.user?.id });
+
   // form data
   const data = {
     amount: "100",
     currency: "ETB",
-    email: "ato@Chala.com",
-    first_name: "Ato",
-    last_name: "Chala",
+    email: user.email,
+    first_name: user.firstName,
+    last_name: user.lastName,
     tx_ref: TEXT_REF,
     callback_url: CALLBACK_URL + TEXT_REF,
     return_url: RETURN_URL,
@@ -39,7 +44,7 @@ export const addPayment = async (req, res) => {
   //     })
   //     .catch((err) => console.log(err));
 
-  //
+  console.log(user.email);
 
   try {
     const response = await axios.post(CHAPA_URL, data, {
@@ -48,6 +53,36 @@ export const addPayment = async (req, res) => {
         "Content-Type": "application/json",
       },
     });
+    console.log(response.data);
+    if (response.data.status === "success") {
+      console.log("Payment was successfully verified");
+      const patient = await Patient.findOne({ user: user._id });
+      if (patient) {
+        const premiumPatient = await PremiumPatient.findOne({
+          patient: patient._id,
+        });
+        if (premiumPatient) {
+          // Update existing premium patient
+          premiumPatient.isPremium = true;
+          premiumPatient.isValid = true;
+          premiumPatient.date = new Date();
+          await premiumPatient.save();
+          console.log("Premium patient updated successfully");
+        } else {
+          // Create new premium patient
+          const newPremiumPatient = new PremiumPatient({
+            patient: patient._id,
+            date: new Date(),
+            isPremium: true,
+            isValid: true,
+          });
+          await newPremiumPatient.save();
+          console.log("Premium patient added successfully");
+        }
+      } else {
+        console.log("Patient not found");
+      }
+    }
     res.json({ detail: response.data });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -57,12 +92,46 @@ export const addPayment = async (req, res) => {
 export const verifyPayment = async (req, res) => {
   //verify the transaction
 
-  await axios
-    .get("https://api.chapa.co/v1/transaction/verify/" + req.params.id, config)
-    .then((response) => {
+  try {
+    const response = await axios.get(
+      "https://api.chapa.co/v1/transaction/verify/" + req.params.id,
+      config
+    );
+
+    if (response.data.data.status === "success") {
       console.log("Payment was successfully verified");
-    })
-    .catch((err) => console.log("Payment can't be verfied", err));
+
+      // Add premium patient to the database
+      const { tx_ref } = response.data.data;
+
+      // Assuming you can extract patient ID or email from the transaction reference or another way
+      const patientEmail = response.data.data.email;
+      const patient = await Patient.findOne({ email: patientEmail });
+
+      if (patient) {
+        const newPremiumPatient = new PremiumPatient({
+          patient: patient._id,
+          date: new Date(),
+          isPremium: true,
+          isValid: true,
+        });
+
+        await newPremiumPatient.save();
+        console.log("Premium patient added successfully");
+
+        res.json({ message: "Payment verified and premium patient added" });
+      } else {
+        console.log("Patient not found");
+        res.status(404).json({ message: "Patient not found" });
+      }
+    } else {
+      console.log("Payment verification failed");
+      res.status(400).json({ message: "Payment verification failed" });
+    }
+  } catch (err) {
+    console.log("Payment can't be verified", err);
+    res.status(500).json({ error: err.message });
+  }
 };
 
 export const paymentSuccess = async (req, res) => {

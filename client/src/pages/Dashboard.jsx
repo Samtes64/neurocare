@@ -135,27 +135,28 @@ const Dashboard = () => {
     });
   };
 
-  const handlePayment = async () => {
+
+
+  const checkout = async () => {
+    const token = localStorage.getItem("fittrack-app-token");
     try {
-      const data = await addPayment();
-      if (data && data.checkout_url) {
-        window.location.href = data.checkout_url;
+      const response = await axios.post(
+        "http://localhost:3003/api/payment/addpayment",
+        { rdurl: "http://localhost:3000" },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      const checkoutUrl = response?.data?.detail?.data?.checkout_url;
+      if (checkoutUrl) {
+        window.location.replace(checkoutUrl);
       }
     } catch (error) {
       console.error("Payment initiation failed", error);
     }
-  };
-
-  const checkout = async () => {
-    await axios
-      .get("http://localhost:3003/api/payment/addpayment", {
-        rdurl: "http://localhost:3000",
-      })
-      .then((res) => {
-        console.log(res);
-        const chekouturl = res?.data?.detail?.data?.checkout_url;
-        chekouturl && window.location.replace(chekouturl);
-      });
   };
 
   const addNewDoneTask = async () => {

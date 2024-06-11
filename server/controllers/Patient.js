@@ -1,5 +1,6 @@
 import DoneTasks from "../models/DoneTasks.js";
 import Patient from "../models/Patient.js";
+import PremiumPatient from "../models/PremiumPatient.js";
 import dotenv from "dotenv";
 
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT);
@@ -242,3 +243,6 @@ export const getDoneTasksByDate = async (req, res, next) => {
     next(err);
   }
 };
+
+// export const checkIfSubscriptionIsAvailable = async(req,res,next)
+

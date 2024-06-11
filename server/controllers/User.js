@@ -9,6 +9,7 @@ import Therapist from "../models/Therapist.js";
 import otpGenerator from "otp-generator";
 import crypto from "crypto";
 import { promisify } from "util";
+import PremiumPatient from "../models/PremiumPatient.js";
 
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT);
 
@@ -293,6 +294,11 @@ export const UserLogin = async (req, res, next) => {
       const patient = await Patient.findOne({ user: user._id });
       if (!patient) {
         return next(createError(404, "Patient not found"));
+      }
+      const premiumPatient = await PremiumPatient.findOne({patient: patient._id})
+      if(premiumPatient){
+        // return res.status(200).json({token,user,patient,premiumPatient})
+        user.premiumPatient = premiumPatient
       }
       console.log(patient);
       return res.status(200).json({ token, user, patient });
