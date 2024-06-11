@@ -98,36 +98,7 @@ export const verifyPayment = async (req, res) => {
       config
     );
 
-    if (response.data.data.status === "success") {
-      console.log("Payment was successfully verified");
-
-      // Add premium patient to the database
-      const { tx_ref } = response.data.data;
-
-      // Assuming you can extract patient ID or email from the transaction reference or another way
-      const patientEmail = response.data.data.email;
-      const patient = await Patient.findOne({ email: patientEmail });
-
-      if (patient) {
-        const newPremiumPatient = new PremiumPatient({
-          patient: patient._id,
-          date: new Date(),
-          isPremium: true,
-          isValid: true,
-        });
-
-        await newPremiumPatient.save();
-        console.log("Premium patient added successfully");
-
-        res.json({ message: "Payment verified and premium patient added" });
-      } else {
-        console.log("Patient not found");
-        res.status(404).json({ message: "Patient not found" });
-      }
-    } else {
-      console.log("Payment verification failed");
-      res.status(400).json({ message: "Payment verification failed" });
-    }
+   
   } catch (err) {
     console.log("Payment can't be verified", err);
     res.status(500).json({ error: err.message });

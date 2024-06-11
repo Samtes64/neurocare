@@ -12,6 +12,7 @@ export const userSlice = createSlice({
   reducers: {
     loginSuccess: (state, action) => {
       state.currentUser = action.payload.user;
+      state.userinfo = action.payload.userinfo;
       localStorage.setItem("fittrack-app-token", action.payload.token);
     },
     logout: (state) => {

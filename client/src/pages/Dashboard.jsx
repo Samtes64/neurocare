@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import SubscriptionModal from "../components/SubscriptionModal";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   flex: 1;
@@ -100,7 +101,9 @@ const Dashboard = () => {
   const [duration, setDuration] = useState("");
   const [mood, setMood] = useState(0);
   const [note, setNote] = useState("");
-  const [showModal, setShowModal] = useState(true); // State to control modal visibility
+  const [showModal, setShowModal] = useState(false);
+
+  const {userinfo} = useSelector((state)=>state.user)
 
   const validateInputs = () => {
     if (!treatment || !duration || !mood) {
@@ -187,7 +190,14 @@ const Dashboard = () => {
   useEffect(() => {
     dashboardData();
     getTodaysTasks();
+    
+    if (userinfo && !userinfo.ispremium) {
+      setShowModal(true);
+    }
   }, []);
+  
+
+
   return (
     <Container>
       <Wrapper>
