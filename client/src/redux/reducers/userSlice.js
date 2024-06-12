@@ -19,6 +19,9 @@ export const userSlice = createSlice({
       state.currentUser = null;
       localStorage.removeItem("fitttrack-app-token");
     },
+    subscriptionSuccess:(state,action)=>{
+      state.userinfo.isPremium= action.payload
+    }
   },
 });
 
@@ -125,6 +128,6 @@ export function NewPassword(formValues) {
   };
 }
 
-export const { loginSuccess, logout } = userSlice.actions;
+export const { loginSuccess, logout,subscriptionSuccess } = userSlice.actions;
 
 export default userSlice.reducer;

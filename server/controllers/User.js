@@ -29,6 +29,10 @@ export const UserRegister = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
 
+    console.log("passwords")
+    console.log("password",password)
+    console.log("hashed",hashedPassword)
+
     const user = new User({
       firstName,
       lastName,
@@ -46,6 +50,21 @@ export const UserRegister = async (req, res, next) => {
         lastName: createdUser.lastName,
       });
       await patient.save();
+
+      const premiumPatient = await PremiumPatient.findOne({
+        patient: patient._id,
+      });
+
+      const userinfo = {
+        patientId: patient._id,
+        patientFirstName: patient.firstName,
+        patientLastName: patient.lastName,
+        isPremium: premiumPatient?.isPremium,
+      };
+      const token = jwt.sign({ id: createdUser._id }, process.env.JWT, {
+        expiresIn: "9999 years",
+      });
+      return res.status(200).json({ token, user, userinfo });
     } else if (userType === "therapist") {
       const therapist = new Therapist({
         user: createdUser._id,
@@ -281,8 +300,10 @@ export const UserLogin = async (req, res, next) => {
     console.log(user);
 
     // Check if password is correct
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await bcrypt.compareSync(password, user.password);
     if (!isPasswordCorrect) {
+      console.log(password)
+      console.log(user.password)
       return next(createError(403, "Incorrect password"));
     }
 
@@ -300,16 +321,11 @@ export const UserLogin = async (req, res, next) => {
       });
 
       const userinfo = {
-        patientId:patient._id,
-        patientFirstName:patient.firstName,
-        patientLastName:patient.lastName,
-        isPremium:premiumPatient?.isPremium
-        
-      }
-
-    
-
-
+        patientId: patient._id,
+        patientFirstName: patient.firstName,
+        patientLastName: patient.lastName,
+        isPremium: premiumPatient?.isPremium,
+      };
 
       console.log(userinfo);
       return res.status(200).json({ token, user, userinfo });

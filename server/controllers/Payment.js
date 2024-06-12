@@ -92,13 +92,13 @@ export const addPayment = async (req, res, next) => {
 export const verifyPayment = async (req, res) => {
   //verify the transaction
 
+  console.log("verifying");
+
   try {
     const response = await axios.get(
       "https://api.chapa.co/v1/transaction/verify/" + req.params.id,
       config
     );
-
-   
   } catch (err) {
     console.log("Payment can't be verified", err);
     res.status(500).json({ error: err.message });
@@ -107,4 +107,54 @@ export const verifyPayment = async (req, res) => {
 
 export const paymentSuccess = async (req, res) => {
   res.render("success");
+};
+
+export const freePayment = async (req, res, next) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return next(createError(400, "User ID is missing"));
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(createError(404, "User not found"));
+    }
+
+    const patient = await Patient.findOne({ user: user._id });
+    if (!patient) {
+      return next(createError(404, "Patient not found"));
+    }
+
+    let premiumPatient = await PremiumPatient.findOne({ patient: patient._id });
+
+    if (premiumPatient) {
+      // Update existing premium patient
+      premiumPatient.isPremium = false;
+      premiumPatient.isValid = true;
+      premiumPatient.date = new Date();
+      await premiumPatient.save();
+      console.log("free patient updated successfully");
+    } else {
+      // Create new premium patient
+      premiumPatient = new PremiumPatient({
+        patient: patient._id,
+        date: new Date(),
+        isPremium: false, // This should be false for free payment
+        isValid: true,
+      });
+      await premiumPatient.save();
+      console.log("free patient added successfully");
+    }
+
+    res
+      .status(200)
+      .json({
+        message: "Patient subscription updated successfully",
+        premiumPatient,
+      });
+  } catch (error) {
+    console.error("Error updating patient subscription", error);
+    next(createError(500, "Internal Server Error"));
+  }
 };

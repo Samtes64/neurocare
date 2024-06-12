@@ -6,6 +6,7 @@ import WeeklyStatCard from "../components/cards/WeeklyStatCard";
 import CategoryChart from "../components/cards/CategoryChart";
 import AddDoneTask from "../components/AddDoneTask";
 import TaskCard from "../components/cards/TaskCard";
+import { subscriptionSuccess } from "../redux/reducers/userSlice";
 import {
   addDoneTask,
   addPayment,
@@ -16,7 +17,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import SubscriptionModal from "../components/SubscriptionModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Container = styled.div`
   flex: 1;
@@ -103,7 +104,8 @@ const Dashboard = () => {
   const [note, setNote] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  const {userinfo} = useSelector((state)=>state.user)
+  const { userinfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const validateInputs = () => {
     if (!treatment || !duration || !mood) {
@@ -138,8 +140,6 @@ const Dashboard = () => {
     });
   };
 
-
-
   const checkout = async () => {
     const token = localStorage.getItem("fittrack-app-token");
     try {
@@ -155,10 +155,35 @@ const Dashboard = () => {
       console.log(response);
       const checkoutUrl = response?.data?.detail?.data?.checkout_url;
       if (checkoutUrl) {
-        window.location.replace(checkoutUrl);
+        dispatch(subscriptionSuccess(true));
+        window.location.href = checkoutUrl;
       }
     } catch (error) {
       console.error("Payment initiation failed", error);
+    }
+  };
+
+  const freecheckout = async () => {
+    const token = localStorage.getItem("fittrack-app-token");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3003/api/payment/freepayment",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch(subscriptionSuccess(false)); // Set to false for free subscription
+      } else {
+        console.error("Subscription update failed");
+      }
+    } catch (error) {
+      console.error("Error during subscription update", error);
     }
   };
 
@@ -181,22 +206,24 @@ const Dashboard = () => {
 
   const handleSubscriptionSelect = (plan) => {
     setShowModal(false);
-    console.log(plan)
+    console.log(plan);
     if (plan === "paid") {
       checkout();
+    } else if (plan === "free") {
+      freecheckout();
     }
   };
 
   useEffect(() => {
     dashboardData();
     getTodaysTasks();
-    
-    if (userinfo && !userinfo.ispremium) {
+
+    if (userinfo && userinfo.isPremium == null) {
       setShowModal(true);
+    } else {
+      setShowModal(false);
     }
   }, []);
-  
-
 
   return (
     <Container>
@@ -234,9 +261,7 @@ const Dashboard = () => {
           <Link to={"/donetasks"}>
             <Button className="mx-10">Get More</Button>
           </Link>
-          <Button onClick={checkout} className="mx-10">
-            payment
-          </Button>
+          
         </Section>
 
         {showModal && (

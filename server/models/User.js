@@ -103,18 +103,18 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-UserSchema.pre("save", async function (next) {
-  // Only run this function if password was actually modified
-  if (!this.isModified("password") || !this.password) return next();
+// UserSchema.pre("save", async function (next) {
+//   // Only run this function if password was actually modified
+//   if (!this.isModified("password") || !this.password) return next();
 
-  // Hash the password with cost of salt
-  const salt = bcrypt.genSaltSync(10);
-  this.password = await bcrypt.hash(this.password, salt);
+//   // Hash the password with cost of salt
+//   const salt = bcrypt.genSaltSync(10);
+//   this.password = await bcrypt.hash(this.password, salt);
 
-  //! Shift it to next hook // this.passwordChangedAt = Date.now() - 1000;
+//   //! Shift it to next hook // this.passwordChangedAt = Date.now() - 1000;
 
-  next();
-});
+//   next();
+// });
 
 UserSchema.methods.correctPassword = async function (
   candidatePassword,
