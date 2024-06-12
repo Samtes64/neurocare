@@ -26,7 +26,7 @@ export const addPayment = async (req, res, next) => {
 
   // form data
   const data = {
-    amount: "100",
+    amount: "3499",
     currency: "ETB",
     email: user.email,
     first_name: user.firstName,

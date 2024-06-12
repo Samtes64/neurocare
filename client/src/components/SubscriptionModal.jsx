@@ -7,7 +7,7 @@ const ModalBackground = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,24 +16,26 @@ const ModalBackground = styled.div`
 
 const ModalContainer = styled.div`
   background: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   max-width: 800px;
   width: 90%;
   text-align: center;
 `;
 
 const ModalTitle = styled.h2`
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: black;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
 `;
 
 const SubscriptionsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
+
   @media (max-width: 600px) {
     flex-direction: column;
     align-items: center;
@@ -41,13 +43,18 @@ const SubscriptionsContainer = styled.div`
 `;
 
 const SubscriptionCard = styled.div`
-  background: #f9f9f9;
-  border-radius: 8px;
-  padding: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  padding: 30px;
   text-align: left;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   flex: 1;
-  max-width: 45%;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
 
   @media (max-width: 600px) {
     max-width: 90%;
@@ -55,32 +62,41 @@ const SubscriptionCard = styled.div`
 `;
 
 const SubscriptionTitle = styled.h3`
-  font-size: 20px;
-  margin-bottom: 10px;
-  color: ${({ theme }) => theme.primary};
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: ${({ theme }) => theme.primary || "#007BFF"};
+  font-weight: bold;
 `;
 
 const Description = styled.p`
   font-size: 16px;
   color: #555;
   margin-bottom: 20px;
-  line-height: 1.5;
+  line-height: 1.6;
+`;
+
+const Price = styled.p`
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 30px;
 `;
 
 const SubscriptionButton = styled.button`
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.primary || "#007BFF"};
   color: #fff;
   border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
+  border-radius: 8px;
+  padding: 15px 25px;
   margin-top: 10px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
   width: 100%;
   text-align: center;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${({ theme }) => theme.primaryHover};
+    background-color: ${({ theme }) => theme.primaryHover || "#0056b3"};
   }
 `;
 
@@ -89,26 +105,24 @@ const SubscriptionModal = ({ onSelect }) => {
     <ModalBackground>
       <ModalContainer>
         <ModalTitle>Select Your Subscription Plan</ModalTitle>
-        
+
         <SubscriptionsContainer>
-          <SubscriptionCard>
+          <SubscriptionCard onClick={() => onSelect("free")}>
             <SubscriptionTitle>Free Plan</SubscriptionTitle>
             <Description>
               Access daily tasks to help manage your well-being.
             </Description>
-            <SubscriptionButton onClick={() => onSelect("free")}>
-              Choose Free Plan
-            </SubscriptionButton>
+            <Price>Price: 0 Birr</Price>
+            <SubscriptionButton>Choose Free Plan</SubscriptionButton>
           </SubscriptionCard>
 
-          <SubscriptionCard>
+          <SubscriptionCard onClick={() => onSelect("paid")}>
             <SubscriptionTitle>Paid Plan</SubscriptionTitle>
             <Description>
               Enjoy all the features of the Free Plan, plus gain access to communicate with professional therapists for personalized guidance.
             </Description>
-            <SubscriptionButton onClick={() => onSelect("paid")}>
-              Choose Paid Plan
-            </SubscriptionButton>
+            <Price>Price: 3499 Birr</Price>
+            <SubscriptionButton>Choose Paid Plan</SubscriptionButton>
           </SubscriptionCard>
         </SubscriptionsContainer>
       </ModalContainer>
