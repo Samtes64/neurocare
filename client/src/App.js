@@ -20,6 +20,7 @@ import Group from "./chatting/pages/dashboard/Group";
 import Call from "./chatting/pages/dashboard/Call";
 import Profile from "./pages/Profile";
 import Todos from "./pages/Todos";
+import Therapists from "./pages/Therapists";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -34,7 +35,8 @@ const GeneralApp = Loadable(
 );
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  scroll:auto;
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => theme.bg};
@@ -56,7 +58,7 @@ function App() {
             <Routes>
               <Route path="/" exact element={<Dashboard />} />
               <Route path="/donetasks" exact element={<DoneTasks />} />
-              <Route path="/todos" exact element={<Todos/>}/>
+              <Route path="/todos" exact element={<Todos />} />
               <Route path="/chat/*" element={<DashboardLayout />}>
                 <Route index element={<GeneralApp />} />
                 <Route path="group" element={<Group />} />
@@ -67,6 +69,7 @@ function App() {
               </Route>
               <Route path="/settings" exact element={<Settings />} />
               <Route path="/profile" exact element={<Profile />} />
+              <Route path="/therapist" exact element={<Therapists />} />
             </Routes>
           </Container>
         ) : (

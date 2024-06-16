@@ -27,6 +27,13 @@ const TherapistSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    yearsOfExperience: {
+      type: Number,
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female"],
+    },
     approvalStatus: {
       type: String,
       enum: ["Pending", "Approved", "Rejected"],
