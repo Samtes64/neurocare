@@ -21,7 +21,6 @@ const Therapists = () => {
       firstName: "John",
       lastName: "Doe",
       profileImage: "https://via.placeholder.com/150",
-      specialization: "Physical Therapy",
     },
     {
       firstName: "Jane",
@@ -79,7 +78,9 @@ const Therapists = () => {
       therapist.firstName.toLowerCase().includes(searchName.toLowerCase());
     const specializationMatches =
       !searchSpecialization ||
-      therapist.specialization.toLowerCase().includes(searchSpecialization.toLowerCase());
+      (therapist.specialization ?? "")
+        .toLowerCase()
+        .includes(searchSpecialization.toLowerCase());
 
     return nameMatches && specializationMatches;
   });
@@ -129,7 +130,10 @@ const Therapists = () => {
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-8 gap-5">
               {currentTherapists.map((therapist) => (
-                <Link to={`/therapist/${therapist.id}`} key={therapist.firstName}>
+                <Link
+                  to={`/therapist/${therapist.id}`}
+                  key={therapist.firstName}
+                >
                   <TherapistCard details={therapist} />
                 </Link>
               ))}

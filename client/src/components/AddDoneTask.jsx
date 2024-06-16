@@ -100,7 +100,7 @@ const AddDoneTask = ({treatment,duration,mood,note,setTreatment,setDuration,setM
   return (
     <Card>
       <Title>Add Done Task</Title>
-      <Select value={treatment} onChange={(e) => setTreatment(e.target.value)}>
+      <Select className="bg-white" value={treatment} onChange={(e) => setTreatment(e.target.value)}>
         <option value="" disabled>
           Select Treatment
         </option>

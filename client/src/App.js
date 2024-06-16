@@ -21,6 +21,7 @@ import Call from "./chatting/pages/dashboard/Call";
 import Profile from "./pages/Profile";
 import Todos from "./pages/Todos";
 import Therapists from "./pages/Therapists";
+import TherapistAuthentication from "./pages/TherapistAuthentication";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -36,7 +37,7 @@ const GeneralApp = Loadable(
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  scroll:auto;
+  scroll: auto;
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => theme.bg};
@@ -56,20 +57,24 @@ function App() {
             <Navbar currentUser={currentUser} />
 
             <Routes>
-              <Route path="/" exact element={<Dashboard />} />
-              <Route path="/donetasks" exact element={<DoneTasks />} />
-              <Route path="/todos" exact element={<Todos />} />
-              <Route path="/chat/*" element={<DashboardLayout />}>
-                <Route index element={<GeneralApp />} />
-                <Route path="group" element={<Group />} />
-                <Route path="call" element={<Call />} />
+              {currentUser.userType === "patient" && (
+                <>
+                  <Route path="/" exact element={<Dashboard />} />
+                  <Route path="/donetasks" exact element={<DoneTasks />} />
+                  <Route path="/todos" exact element={<Todos />} />
+                  <Route path="/chat/*" element={<DashboardLayout />}>
+                    <Route index element={<GeneralApp />} />
+                    <Route path="group" element={<Group />} />
+                    <Route path="call" element={<Call />} />
 
-                <Route path="404" element={<Page404 />} />
-                <Route path="*" element={<Navigate to="/404" replace />} />
-              </Route>
-              <Route path="/settings" exact element={<Settings />} />
-              <Route path="/profile" exact element={<Profile />} />
-              <Route path="/therapist" exact element={<Therapists />} />
+                    <Route path="404" element={<Page404 />} />
+                    <Route path="*" element={<Navigate to="/404" replace />} />
+                  </Route>
+                  <Route path="/settings" exact element={<Settings />} />
+                  <Route path="/profile" exact element={<Profile />} />
+                  <Route path="/therapist" exact element={<Therapists />} />
+                </>
+              )}
             </Routes>
           </Container>
         ) : (
@@ -87,6 +92,11 @@ function App() {
                 path="/signup"
                 exact
                 element={<Authentication loginProp={true} />}
+              />
+              <Route
+                path="/therapistsignup"
+                exact
+                element={<TherapistAuthentication loginProp={true} />}
               />
               <Route path="/assessment" exact element={<Assessment />} />
               <Route path="/forgotpassword" exact element={<ResetPassword />} />

@@ -20,9 +20,11 @@ function Hero() {
             <span className="ml-3 text-2xl font-bold">NeuroCare</span>
           </a>
           <div className="flex items-center">
+            <Link to="/therapistsignup">
             <button className="inline-flex items-center justify-center text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded-md text-lg ">
               <span className="text-sm">Partner With Us</span>
             </button>
+            </Link>
             <Link to="/login">
               <button className="ml-4 inline-flex items-center justify-center text-white border-0 py-2 px-6 focus:outline-none rounded-md text-lg hover:shadow-md bg-blue-500 shadow-lg">
                 <span className="text-sm">Login</span>

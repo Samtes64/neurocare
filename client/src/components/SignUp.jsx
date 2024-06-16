@@ -33,13 +33,22 @@ const SignUp = () => {
   const [lastName, setlastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("patient")
+  const [userType, setUserType] = useState("patient");
   const navigate = useNavigate();
 
   const validateInputs = () => {
     if (!firstName || !lastName || !email || !password) {
       alert("Please fill in all fields");
       return false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      alert("Email address is invalid");
+      return false;
+    } else if (password.length < 8) {
+      alert("Password must be at least 8 characters");
+      return false;
+    } else if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+      alert("Password must contain both letters and numbers");
+      return false
     }
     return true;
   };
@@ -48,7 +57,7 @@ const SignUp = () => {
     setLoading(true);
     setButtonDisabled(true);
     if (validateInputs()) {
-      await UserSignUp({ firstName, lastName, email, password,userType })
+      await UserSignUp({ firstName, lastName, email, password, userType })
         .then((res) => {
           dispatch(loginSuccess(res.data));
           alert("Account Created Success");
@@ -62,6 +71,9 @@ const SignUp = () => {
           setButtonDisabled(false);
         });
     }
+    setLoading(false);
+    setButtonDisabled(false);
+
   };
   return (
     <Container>
