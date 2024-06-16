@@ -4,13 +4,12 @@ import mongoose from "mongoose";
 import UserRoutes from "./routes/User.js";
 import TreatmentRoutes from "./routes/Treatment.js";
 import PatientRoutes from "./routes/Patient.js";
-import PaymentRoutes from "./routes/Payment.js"
+import PaymentRoutes from "./routes/Payment.js";
 
 import http from "http";
 import DoneTaskRoutes from "./routes/DoneTask.js";
 import { Server } from "socket.io";
 import User from "./models/User.js";
-
 
 dotenv.config();
 
@@ -36,7 +35,7 @@ app.use("/api/tasks/", DoneTaskRoutes);
 
 app.use("/api/patient", PatientRoutes);
 
-app.use("/api/payment/", PaymentRoutes)
+app.use("/api/payment/", PaymentRoutes);
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;
@@ -57,8 +56,6 @@ app.get("/", async (req, res) => {
 // trying chapas payment integration
 
 app.set("view engine", "ejs");
-
-
 
 // app.get("/api/pay", async (req, res) => {
 //   // chapa redirect you to this url when payment is successful
@@ -92,7 +89,7 @@ app.set("view engine", "ejs");
 // verification endpoint
 // app.get("/api/verify-payment/:id", async (req, res) => {
 //   //verify the transaction
-  
+
 //   await axios
 //     .get("https://api.chapa.co/v1/transaction/verify/" + req.params.id, config)
 //     .then((response) => {
@@ -144,7 +141,19 @@ io.on("connection", async (socket) => {
     }
   }
 
-})
+  socket.on("end", async (data) => {
+    // Find user by ID and set status as offline
+
+    if (data.user_id) {
+      await User.findByIdAndUpdate(data.user_id, { status: "Offline" });
+    }
+
+    // broadcast to all conversation rooms of this user that this user is offline (disconnected)
+
+    console.log("closing connection");
+    socket.disconnect(0);
+  });
+});
 
 process.on("unhandledRejection", (err) => {
   console.log(err);

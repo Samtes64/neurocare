@@ -4,6 +4,13 @@ import { showSnackbar } from "./app";
 
 const initialState = {
   currentUser: null,
+  isLoggedIn: false,
+  token: "",
+  isLoading: false,
+  user: null,
+  user_id: null,
+  email: "",
+  error: false,
 };
 
 export const userSlice = createSlice({
@@ -13,11 +20,21 @@ export const userSlice = createSlice({
     loginSuccess: (state, action) => {
       state.currentUser = action.payload.user;
       state.userinfo = action.payload.userinfo;
+      state.isLoggedIn = true;
+      state.token = action.payload.token;
+      state.user_id = action.payload.user._id;
+      window.localStorage.setItem("user_id", action.payload.user._id);
       localStorage.setItem("fittrack-app-token", action.payload.token);
     },
     logout: (state) => {
       state.currentUser = null;
+      state.isLoggedIn = false;
+      state.token = "";
+      state.user_id = null;
+      state.currentUser=null
+      state.userinfo=null
       localStorage.removeItem("fitttrack-app-token");
+      localStorage.removeItem("user_id");
     },
     subscriptionSuccess:(state,action)=>{
       state.userinfo.isPremium= action.payload
