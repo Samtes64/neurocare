@@ -10,6 +10,7 @@ import otpGenerator from "otp-generator";
 import crypto from "crypto";
 import { promisify } from "util";
 import PremiumPatient from "../models/PremiumPatient.js";
+// import mailService from "../services/mailer.js"
 
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT);
 
@@ -28,10 +29,6 @@ export const UserRegister = async (req, res, next) => {
     const isActive = 1;
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
-
-    console.log("passwords")
-    console.log("password",password)
-    console.log("hashed",hashedPassword)
 
     const user = new User({
       firstName,
@@ -302,8 +299,8 @@ export const UserLogin = async (req, res, next) => {
     // Check if password is correct
     const isPasswordCorrect = await bcrypt.compareSync(password, user.password);
     if (!isPasswordCorrect) {
-      console.log(password)
-      console.log(user.password)
+      console.log(password);
+      console.log(user.password);
       return next(createError(403, "Incorrect password"));
     }
 
@@ -342,4 +339,12 @@ export const UserLogin = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
+};
+
+export const getUsers = async (req, res) => {
+  const all_users = await User.find({}).select("firstName lastName");
+
+  res.status(200).json({
+    data : all_users
+  })
 };

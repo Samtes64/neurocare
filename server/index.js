@@ -8,6 +8,8 @@ import PaymentRoutes from "./routes/Payment.js"
 
 import http from "http";
 import DoneTaskRoutes from "./routes/DoneTask.js";
+import { Server } from "socket.io";
+import User from "./models/User.js";
 
 
 dotenv.config();
@@ -19,6 +21,12 @@ process.on("uncaughtException", (err) => {
 });
 
 const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 app.use("/api/user/", UserRoutes);
 
@@ -118,6 +126,25 @@ const startServer = async () => {
 };
 
 startServer();
+
+io.on("connection", async (socket) => {
+  console.log(JSON.stringify(socket.handshake.query));
+  const user_id = socket.handshake.query["user_id"];
+
+  console.log(`User connected ${socket.id}`);
+
+  if (user_id != null && Boolean(user_id)) {
+    try {
+      User.findByIdAndUpdate(user_id, {
+        socket_id: socket.id,
+        status: "Online",
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+})
 
 process.on("unhandledRejection", (err) => {
   console.log(err);
