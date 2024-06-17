@@ -149,4 +149,10 @@ const initialState = {
     };
   }
 
+  export const SelectConversation = ({ room_id }) => {
+    return async (dispatch, getState) => {
+      dispatch(slice.actions.selectConversation({ room_id }));
+    };
+  };
+
   export default slice.reducer;

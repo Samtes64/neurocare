@@ -1,11 +1,13 @@
 import React, { Suspense, lazy } from "react";
 import Chats from "./Chats";
-import { Stack, Box } from "@mui/material";
+import { Stack, Box, Typography } from "@mui/material";
 import Conversation from "../../components/Conversation";
 import Contact from "../../sections/dashboard/Contact";
 import { useSelector } from "react-redux";
 import StarredMessages from "../../sections/dashboard/StarredMessages";
 import Media from "../../sections/dashboard/SharedMessages";
+
+import { Link, useSearchParams } from "react-router-dom";
 
 const Cat = lazy(() => import("../../components/Cat"));
 
@@ -26,7 +28,31 @@ const GeneralApp = () => {
             backgroundColor: "#FFF",
           }}
         >
-          <Conversation />
+           {chat_type === "individual" &&
+          room_id !== null ? (
+            <Conversation />
+          ) : (
+            <Stack
+              spacing={2}
+              sx={{ height: "100%", width: "100%" }}
+              alignItems="center"
+              justifyContent={"center"}
+            >
+              
+              <Typography variant="subtitle2">
+                Select a conversation or start a{" "}
+                <Link
+                  style={{
+                    
+                    textDecoration: "none",
+                  }}
+                  to="/"
+                >
+                  new one
+                </Link>
+              </Typography>
+            </Stack>
+          )}
         </Box>
         
         {sideBar.open &&

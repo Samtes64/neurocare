@@ -6,6 +6,7 @@ import { User } from 'phosphor-react';
 import userReducer from "./reducers/userSlice"
 import audioCallReducer from "./reducers/audioCall"
 import videoCallReducer from "./reducers/videoCall"
+import conversationReducer from "./reducers/conversation"
 
 
 // ----------------------------------------------------------------------
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   audioCall: audioCallReducer,
   videoCall: videoCallReducer,
+  conversation: conversationReducer,
  
 });
 
