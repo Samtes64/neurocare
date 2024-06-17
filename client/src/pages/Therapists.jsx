@@ -56,11 +56,12 @@ const Therapists = () => {
     // },
   ]);
 
+  
+
 
 
   useEffect(() => {
-    console.log("hello");
-    // getAllTherapists();
+    
     axios
       .get("http://localhost:3003/api/therapist/getalltherapists", {
         headers: { Authorization: `Bearer ${token}` },
@@ -121,7 +122,7 @@ const Therapists = () => {
     setsearchSpecialization(event.target.value);
   };
 
-  //   return <TherapistCard />;
+  
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -152,8 +153,8 @@ const Therapists = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-8 gap-5">
               {currentTherapists.map((therapist) => (
                 <Link
-                  to={`/therapist/${therapist.id}`}
-                  key={therapist.firstName}
+                  to={`/therapist/${therapist._id}`}
+                  key={therapist._id}
                 >
                   <TherapistCard details={therapist} />
                 </Link>

@@ -22,6 +22,7 @@ import Profile from "./pages/Profile";
 import Todos from "./pages/Todos";
 import Therapists from "./pages/Therapists";
 import TherapistAuthentication from "./pages/TherapistAuthentication";
+import TherapistProfile from "./pages/TherapistProfile";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -73,6 +74,7 @@ function App() {
                   <Route path="/settings" exact element={<Settings />} />
                   <Route path="/profile" exact element={<Profile />} />
                   <Route path="/therapist" exact element={<Therapists />} />
+                  <Route path="/therapist/:id" element={<TherapistProfile />} />
                 </>
               )}
             </Routes>

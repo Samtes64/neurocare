@@ -10,7 +10,7 @@ const TherapistCard = ({details}) => {
   // const Profession = { Name: "Therapist" };
   const averageRating = 3;
   const {
-   
+   _id,
     profileImage,
     firstName,
     lastName,
@@ -91,10 +91,10 @@ const TherapistCard = ({details}) => {
         />
       </div>
       <Link
-      //   to={{
-      //     pathname: `/worker/${details.id}`,
-      //     state: { worker: details }, // Pass the worker's data in the state object
-      //   }}
+        to={{
+          pathname: `/therapist/${_id}`,
+          state: { therapist: details }, // Pass the worker's data in the state object
+        }}
       >
         <button className="bg-primary text-white py-3 px-6 rounded-md hover:bg-slate-100 hover:text-[16px] hover:text-primary duration-500">
           Check profile
