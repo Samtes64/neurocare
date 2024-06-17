@@ -35,3 +35,9 @@ export const addDoneTask = async (token, data) =>
 export const addPayment = async () => {
   await API.get("/payment/addpayment");
 };
+
+export const getAllTherapists = async (token) => {
+  await API.get(`/therapist/getalltherapists`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};

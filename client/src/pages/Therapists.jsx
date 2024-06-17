@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { AiOutlineSearch } from "react-icons/ai";
 import ReactPaginate from "react-paginate";
+import { getAllTherapists } from "../api";
 
 const Therapists = () => {
   const itemsPerPage = 8;
@@ -15,47 +16,67 @@ const Therapists = () => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [searchName, setsearchName] = useState("");
   const [searchSpecialization, setsearchSpecialization] = useState("");
+  const token = localStorage.getItem("fittrack-app-token");
 
   const [listOfTherapists, setListOfTherapists] = useState([
-    {
-      firstName: "John",
-      lastName: "Doe",
-      profileImage: "https://via.placeholder.com/150",
-    },
-    {
-      firstName: "Jane",
-      lastName: "Smith",
-      profileImage: "https://via.placeholder.com/150",
-      specialization: "Occupational Therapy",
-    },
-    {
-      firstName: "Emily",
-      lastName: "Johnson",
-      profileImage: "https://via.placeholder.com/150",
-      specialization: "Speech Therapy",
-    },
-    {
-      firstName: "Michael",
-      lastName: "Brown",
-      profileImage: "https://via.placeholder.com/150",
-      specialization: "Mental Health Therapy",
-    },
-    {
-      firstName: "Sarah",
-      lastName: "Davis",
-      profileImage: "https://via.placeholder.com/150",
-      specialization: "Pediatric Therapy",
-    },
-    {
-      firstName: "James",
-      lastName: "Wilson",
-      profileImage: "https://via.placeholder.com/150",
-      specialization: "Geriatric Therapy",
-    },
+    // {
+    //   firstName: "John",
+    //   lastName: "Doe",
+    //   profileImage: "https://via.placeholder.com/150",
+    // },
+    // {
+    //   firstName: "Jane",
+    //   lastName: "Smith",
+    //   profileImage: "https://via.placeholder.com/150",
+    //   specialization: "Occupational Therapy",
+    // },
+    // {
+    //   firstName: "Emily",
+    //   lastName: "Johnson",
+    //   profileImage: "https://via.placeholder.com/150",
+    //   specialization: "Speech Therapy",
+    // },
+    // {
+    //   firstName: "Michael",
+    //   lastName: "Brown",
+    //   profileImage: "https://via.placeholder.com/150",
+    //   specialization: "Mental Health Therapy",
+    // },
+    // {
+    //   firstName: "Sarah",
+    //   lastName: "Davis",
+    //   profileImage: "https://via.placeholder.com/150",
+    //   specialization: "Pediatric Therapy",
+    // },
+    // {
+    //   firstName: "James",
+    //   lastName: "Wilson",
+    //   profileImage: "https://via.placeholder.com/150",
+    //   specialization: "Geriatric Therapy",
+    // },
   ]);
+
+
+
+  useEffect(() => {
+    console.log("hello");
+    // getAllTherapists();
+    axios
+      .get("http://localhost:3003/api/therapist/getalltherapists", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        // console.log(res.data);
+        setListOfTherapists(res.data)
+        console.log(listOfTherapists)
+
+
+      });
+  }, []);
 
   useEffect(() => {
     // Calculate the start and end index for the current page
+
     const startIndex = currentPage * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
