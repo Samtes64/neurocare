@@ -7,7 +7,7 @@ const TherapistPatientSchema = new mongoose.Schema({
     ref: "Patient",
     required: true,
   },
-  Therapist: {
+  therapist: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Therapist",
     required: true,

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Therapist from "../models/Therapist.js";
+import TherapistPatient from "../models/TherapistPatient.js";
 
 export const getAllTherapists = async (req, res, next) => {
   try {
@@ -49,3 +50,27 @@ export const getTherapistById = async (req, res, next) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const setTherapistForPatient=async(req,res,next)=>{
+
+  try{
+    const userId = req.user?.id;
+
+    const therapistId = req.query.id;
+
+    const newTherapistPatient = new TherapistPatient({
+      patient: userId,
+      therapist:therapistId,
+      date:Date.now(),
+      isValid:true
+    })
+
+    const saveTherapistPatient = await newTherapistPatient.save()
+
+    return res.status(201).json(saveTherapistPatient);
+
+
+  }catch(err){
+    return next(err);
+  }
+}

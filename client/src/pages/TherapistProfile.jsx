@@ -8,7 +8,7 @@ import { RiLoopLeftLine } from "react-icons/ri";
 import { GiMoneyStack } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
-import { getTherapistById } from "../api";
+import { getTherapistById, setTherapistForPatient } from "../api";
 import { Avatar } from "@mui/material";
 const TherapistProfile = () => {
   const { id } = useParams();
@@ -40,7 +40,7 @@ const TherapistProfile = () => {
   }, [id]);
 
   const [Ratepopup, setRatepopup] = useState(false);
-  const [chooseTherapistPopup, setChooseTherapistPopup] = useState(false)
+  const [chooseTherapistPopup, setChooseTherapistPopup] = useState(false);
   const Rate = (event) => {
     setRatepopup(!Ratepopup);
   };
@@ -64,6 +64,23 @@ const TherapistProfile = () => {
   //   }, [id]);
 
   const [hasApplied, setHasApplied] = useState(false);
+
+  const handleSetTherapist = async () => {
+    const token = localStorage.getItem("fittrack-app-token");
+    try {
+      const response = await axios.post(
+        `http://localhost:3003/api/therapist/settherapistforpatient?id=${id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log('Therapist set successfully:', response.data);
+      setChooseTherapistPopup(false); // Close the pop-up after confirming
+    } catch (error) {
+      console.error('Error setting therapist:', error.response ? error.response.data : error.message);
+    }
+  };
 
   //   useEffect(() => {
   //     // Make a request to check if the therapist has applied for a job
@@ -402,33 +419,39 @@ const TherapistProfile = () => {
         </button>
       </div>
       <div
-  className={
-    chooseTherapistPopup
-      ? "bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col px-9 py-4 gap-3 rounded-xl shadow-xl"
-      : "hidden"
-  }
->
-  <button className="absolute top-2 right-2 text-gray-600" onClick={ChoseTherapist}>
-    <AiOutlineClose />
-  </button>
-  <h2 className="text-black text-center font-semibold">Confirm Therapist</h2>
-  <p className="text-center text-black">Are you sure you want to choose this therapist?</p>
-  <div className="flex justify-center gap-4 mt-4">
-    <button
-      className="bg-primary text-white py-2 px-6 rounded-md hover:bg-slate-100 hover:text-primary duration-500"
-      onClick={ChoseTherapist}
-    >
-      Yes
-    </button>
-    <button
-      className="bg-red-500 text-white py-2 px-6 rounded-md hover:bg-red-600 duration-500"
-      onClick={ChoseTherapist}
-    >
-      No
-    </button>
-  </div>
-</div>
-
+        className={
+          chooseTherapistPopup
+            ? "bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col px-9 py-4 gap-3 rounded-xl shadow-xl"
+            : "hidden"
+        }
+      >
+        <button
+          className="absolute top-2 right-2 text-gray-600"
+          onClick={ChoseTherapist}
+        >
+          <AiOutlineClose />
+        </button>
+        <h2 className="text-black text-center font-semibold">
+          Confirm Therapist
+        </h2>
+        <p className="text-center text-black">
+          Are you sure you want to choose this therapist?
+        </p>
+        <div className="flex justify-center gap-4 mt-4">
+          <button
+            className="bg-primary text-white py-2 px-6 rounded-md hover:bg-slate-100 hover:text-primary duration-500"
+            onClick={handleSetTherapist}
+          >
+            Yes
+          </button>
+          <button
+            className="bg-red-500 text-white py-2 px-6 rounded-md hover:bg-red-600 duration-500"
+            onClick={ChoseTherapist}
+          >
+            No
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
