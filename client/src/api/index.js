@@ -61,8 +61,42 @@ export const updateTherapistProfile = async (token, data) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
+export const getTherapistByUserId = async (token) =>
+  API.get(`/therapist/gettherapistbyuserid`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
-  export const getTherapistByUserId = async (token) =>
-    API.get(`/therapist/gettherapistbyuserid`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+// Document Management
+export const uploadDocument = async (token, formData) =>
+  API.post("/documents/upload", formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+export const getDocumentsByTherapist = async (token) =>
+  API.get("/documents/self", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+export const getDocumentsById = async (token, therapistId) =>
+  API.get(`/documents/byId/${therapistId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+export const downloadDocuments = async (token, therapistId) =>
+  API.get(`/documents/download/${therapistId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    responseType: "blob", // Ensure the response is treated as a blob
+  });
+
+export const deleteDocument = async (token, documentId) =>
+  API.delete(`/documents/${documentId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+export const hasDocument = async (token, therapistId) =>
+  API.get(`/documents/hasDocument/${therapistId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });

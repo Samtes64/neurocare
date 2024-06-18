@@ -7,6 +7,7 @@ import PatientRoutes from "./routes/Patient.js";
 import PaymentRoutes from "./routes/Payment.js";
 import TherapistRoutes from "./routes/Therapist.js"
 import messageRoutes from "./routes/Message.js"
+import documentRoutes from "./routes/Document.js"
 
 import http from "http";
 import DoneTaskRoutes from "./routes/DoneTask.js";
@@ -47,6 +48,8 @@ app.use("/api/payment/", PaymentRoutes);
 app.use("/api/therapist/", TherapistRoutes)
 
 app.use('/api/messages', messageRoutes);
+
+app.use('/api/documents', documentRoutes);
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;

@@ -332,7 +332,15 @@ export const UserLogin = async (req, res, next) => {
         return next(createError(404, "Therapist not found"));
       }
       console.log(therapist);
-      return res.status(200).json({ token, user, therapist });
+      const userinfo = {
+        therapistId: therapist._id,
+        therapistFirstName: therapist.firstName,
+        therapistLastName: therapist.lastName,
+        therapistApprovalStatus: therapist.approvalStatus,
+        therapistProfileImageName: therapist.profileImageName,
+        
+      };
+      return res.status(200).json({ token, user, userinfo });
     }
 
     return res.status(200).json({ token, user });
@@ -345,6 +353,6 @@ export const getUsers = async (req, res) => {
   const all_users = await User.find({}).select("firstName lastName");
 
   res.status(200).json({
-    data : all_users
-  })
+    data: all_users,
+  });
 };
