@@ -13,7 +13,7 @@ import DoneTaskRoutes from "./routes/DoneTask.js";
 import { Server } from "socket.io";
 import User from "./models/User.js";
 import OneToOneMessage from "./models/OneToOneMessage.js";
-
+import express from "express"
 
 dotenv.config();
 
@@ -30,6 +30,9 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+
+
+
 
 app.use("/api/user/", UserRoutes);
 

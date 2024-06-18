@@ -26,6 +26,7 @@ const ProfileForm = () => {
     phoneNumber: "",
     specialization: "",
     about: "",
+     // avatar: `https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${user?.avatar}`,
   });
 
   useEffect(() => {
@@ -40,6 +41,7 @@ const ProfileForm = () => {
           phoneNumber: resData.phoneNumber,
           specialization: resData.specialization,
           about: resData.description,
+          profileImage:`http://localhost:3003/images/${resData.profileImageName}`
         });
       });
     } catch (err) {
