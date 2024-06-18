@@ -10,6 +10,7 @@ import otpGenerator from "otp-generator";
 import crypto from "crypto";
 import { promisify } from "util";
 import PremiumPatient from "../models/PremiumPatient.js";
+import axios from "axios";
 // import mailService from "../services/mailer.js"
 
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT);
@@ -69,11 +70,36 @@ export const UserRegister = async (req, res, next) => {
         lastName: createdUser.lastName,
       });
       await therapist.save();
+
+      const userinfo = {
+        therapistId: therapist._id,
+        therapistFirstName: therapist.firstName,
+        therapistLastName: therapist.lastName,
+        therapistApprovalStatus: therapist.approvalStatus,
+        therapistProfileImageName: therapist.profileImageName,
+      };
+
+      try {
+        const r = await axios.post(
+          "https://api.chatengine.io/users/",
+          {
+            username: createdUser.email,
+            secret: createdUser.email,
+            // email: createdUser.email,
+            first_name: createdUser.firstName,
+            last_name: createdUser.lastName,
+          },
+          { headers: { "Private-Key": "1b6dbf10-3fbd-46dd-b5e1-f94d331e35b2" } }
+        );
+        const chat = r.data;
+        const token = jwt.sign({ id: createdUser._id }, process.env.JWT, {
+          expiresIn: "9999 years",
+        });
+        return res.status(200).json({ token, user, userinfo, chat });
+      } catch (e) {
+        console.log(e);
+      }
     }
-    const token = jwt.sign({ id: createdUser._id }, process.env.JWT, {
-      expiresIn: "9999 years",
-    });
-    return res.status(200).json({ token, user });
   } catch (error) {
     return next(error);
   }
@@ -338,7 +364,6 @@ export const UserLogin = async (req, res, next) => {
         therapistLastName: therapist.lastName,
         therapistApprovalStatus: therapist.approvalStatus,
         therapistProfileImageName: therapist.profileImageName,
-        
       };
       return res.status(200).json({ token, user, userinfo });
     }

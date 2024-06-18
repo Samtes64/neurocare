@@ -75,7 +75,7 @@ export default function ListOfPatients() {
             placeholder="Search patient..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-2 lg:w-64"
+            className="border border-gray-300 rounded-md px-3 py-2 lg:w-64 bg-slate-200"
           />
         </div>
         <div className="mt-4 lg:mt-0 space-x-3">
