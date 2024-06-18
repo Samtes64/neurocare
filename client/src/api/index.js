@@ -47,12 +47,22 @@ export const getTherapistById = async (token, id) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 export const setTherapistForPatient = async (token, id) =>
-  await API.post(`/therapist/settherapistforpatient${id}`,{}, {
+  await API.post(
+    `/therapist/settherapistforpatient${id}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+export const getMessages = (from, to) => API.get(`/messages/${from}/${to}`);
+
+export const updateTherapistProfile = async (token, data) =>
+  API.put("/therapist/updatetherapist", data, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  export const getMessages = (from, to) => API.get(`/messages/${from}/${to}`);
 
-  export const updateTherapistProfile = async (token, data) =>
-    API.put("/therapist/updatetherapist", data, {
+
+  export const getTherapistByUserId = async (token) =>
+    API.get(`/therapist/gettherapistbyuserid`, {
       headers: { Authorization: `Bearer ${token}` },
     });

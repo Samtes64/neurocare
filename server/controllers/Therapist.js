@@ -186,3 +186,32 @@ export const setTherapistForPatient = async (req, res, next) => {
     return next(err);
   }
 };
+
+export const getTherapistByUserId = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Fetch the profile data by user ID
+    const therapist = await Therapist.findOne({
+      user: userId,
+    });
+
+    if (!therapist) {
+      // If the therapist profile is not found, return a 404 status with an error message
+      return res.status(404).json({ error: "Profile not found" });
+    }
+
+    // Include the profile image data
+    const profileImageName = therapist.avatar; // Assuming the column name is 'avatar'
+
+    // Add the profile image data to the therapist object
+    // therapist.dataValues.profileImageName = profileImageName;
+
+    // If the profile is found, return it in the response
+    return res.status(200).json(therapist);
+  } catch (error) {
+    // Handle any errors that occur during the retrieval process
+    console.error("Error fetching therapist profile:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
