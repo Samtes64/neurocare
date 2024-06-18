@@ -59,10 +59,27 @@ export const UserRegister = async (req, res, next) => {
         patientLastName: patient.lastName,
         isPremium: premiumPatient?.isPremium,
       };
-      const token = jwt.sign({ id: createdUser._id }, process.env.JWT, {
-        expiresIn: "9999 years",
-      });
-      return res.status(200).json({ token, user, userinfo });
+
+      try {
+        const r = await axios.post(
+          "https://api.chatengine.io/users/",
+          {
+            username: createdUser.email,
+            secret: createdUser.email,
+            // email: createdUser.email,
+            first_name: createdUser.firstName,
+            last_name: createdUser.lastName,
+          },
+          { headers: { "Private-Key": "1b6dbf10-3fbd-46dd-b5e1-f94d331e35b2" } }
+        );
+        const chat = r.data;
+        const token = jwt.sign({ id: createdUser._id }, process.env.JWT, {
+          expiresIn: "9999 years",
+        });
+        return res.status(200).json({ token, user, userinfo, chat });
+      } catch (e) {
+        console.log(e);
+      }
     } else if (userType === "therapist") {
       const therapist = new Therapist({
         user: createdUser._id,
@@ -365,7 +382,20 @@ export const UserLogin = async (req, res, next) => {
         therapistApprovalStatus: therapist.approvalStatus,
         therapistProfileImageName: therapist.profileImageName,
       };
-      return res.status(200).json({ token, user, userinfo });
+
+      try {
+        const r = await axios.get("https://api.chatengine.io/users/me/", {
+          headers: {
+            "Project-ID": "041a7342-4a91-40c0-ada4-6aa6ac8a1177",
+            "User-Name": email,
+            "User-Secret": email,
+          },
+        });
+        const chat = r.data;
+        return res.status(200).json({ token, user, userinfo, chat });
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     return res.status(200).json({ token, user });

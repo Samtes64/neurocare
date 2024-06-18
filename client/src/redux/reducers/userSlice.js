@@ -3,6 +3,7 @@ import axios from "../../utils/axios";
 import { showSnackbar } from "./app";
 
 const initialState = {
+  chat:null,
   currentUser: null,
   isLoggedIn: false,
   token: "",
@@ -19,6 +20,7 @@ export const userSlice = createSlice({
   reducers: {
     loginSuccess: (state, action) => {
       state.currentUser = action.payload.user;
+      state.chat = action.payload.chat;
       state.userinfo = action.payload.userinfo;
       state.isLoggedIn = true;
       state.token = action.payload.token;

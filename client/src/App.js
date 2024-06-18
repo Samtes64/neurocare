@@ -27,6 +27,7 @@ import TherapistProfile from "./pages/TherapistProfile";
 
 import TherapistDashboard from "./pages/Therapist/TherapistDashboard";
 import MyPatients from "./pages/Therapist/MyPatients";
+import ChatsPage from "./pages/ChatPage";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -67,14 +68,16 @@ function App() {
                   <Route path="/" exact element={<Dashboard />} />
                   <Route path="/donetasks" exact element={<DoneTasks />} />
                   <Route path="/todos" exact element={<Todos />} />
-                  <Route path="/chat/*" element={<DashboardLayout />}>
+                  {/* <Route path="/chat/*" element={<DashboardLayout />}>
                     <Route index element={<GeneralApp />} />
                     <Route path="group" element={<Group />} />
                     <Route path="call" element={<Call />} />
 
                     <Route path="404" element={<Page404 />} />
                     <Route path="*" element={<Navigate to="/404" replace />} />
-                  </Route>
+                  </Route> */}
+
+                  <Route path="/chat" exact element={<ChatsPage />} />
                   <Route path="/settings" exact element={<Settings />} />
                   <Route path="/profile" exact element={<Profile />} />
                   <Route path="/therapist" exact element={<Therapists />} />
@@ -88,7 +91,7 @@ function App() {
                   <Route path="/" exact element={<TherapistDashboard />} />
                   <Route path="/patients" exact element={<MyPatients />} />
                   <Route path="/profile" exact element={<Profile />} />
-
+                  <Route path="/chat" exact element={<ChatsPage />} />
                 </>
               )}
             </Routes>
