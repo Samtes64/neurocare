@@ -26,7 +26,7 @@ const ProfileForm = () => {
     phoneNumber: "",
     specialization: "",
     about: "",
-     // avatar: `https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${user?.avatar}`,
+     
   });
 
   useEffect(() => {

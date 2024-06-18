@@ -5,7 +5,8 @@ import ProfileForm from "../components/ProfileForm";
 import { useDispatch } from "react-redux";
 // import { FetchUserProfile } from "../../../redux/slices/app";
 import { useNavigate } from "react-router-dom";
-import ProfileT from "./Therapist/ProfileT";
+
+import Documents from "./Therapist/Documents";
 
 
 
@@ -59,9 +60,9 @@ const Profile = () => {
               theme.palette.mode === "light"
                 ? "#FFF"
                 : theme.palette.background.paper,
-            borderBottom: "6px solid #0162C4",
+             
           }}
-        ><ProfileT/></Box>
+        ><Documents/></Box>
       </Stack>
     </>
   );
