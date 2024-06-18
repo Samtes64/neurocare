@@ -42,8 +42,8 @@ export default function MditAppointment({ patient }) {
         />
       </div>
       {error && <div className="text-red-500 text-sm">{error}</div>}
-      <div className="flex flex-col sm:flex-row">
-        <div className="w-full sm:w-1/2">
+      <div className="flex flex-col sm:flex-col">
+        <div className="w-full ">
           <Calendar
             mode="single"
             selected={date}
@@ -51,12 +51,12 @@ export default function MditAppointment({ patient }) {
             className="mt-1 rounded-md border"
           />
         </div>
-        <div className="w-full sm:w-1/2">
+        <div className="w-full ">
           <button
             type="submit"
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-4 sm:mt-0"
           >
-            Change
+            Set
           </button>
         </div>
       </div>
