@@ -18,6 +18,7 @@ import ResetPassword from "./pages/ResetPassword";
 import NewPassword from "./pages/NewPassword";
 import Group from "./chatting/pages/dashboard/Group";
 import Call from "./chatting/pages/dashboard/Call";
+// import Profile from "./pages/Therapist/Profile";
 import Profile from "./pages/Profile";
 import Todos from "./pages/Todos";
 import Therapists from "./pages/Therapists";
@@ -75,6 +76,14 @@ function App() {
                   <Route path="/profile" exact element={<Profile />} />
                   <Route path="/therapist" exact element={<Therapists />} />
                   <Route path="/therapist/:id" element={<TherapistProfile />} />
+                </>
+              )}
+            </Routes>
+            <Routes>
+              {currentUser.userType === "therapist" && (
+                <>
+                  <Route path="/" exact element={<Profile />} />
+
                 </>
               )}
             </Routes>

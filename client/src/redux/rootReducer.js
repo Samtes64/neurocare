@@ -7,6 +7,7 @@ import userReducer from "./reducers/userSlice"
 import audioCallReducer from "./reducers/audioCall"
 import videoCallReducer from "./reducers/videoCall"
 import conversationReducer from "./reducers/conversation"
+import chatReducer from './reducers/chatReducer';
 
 
 // ----------------------------------------------------------------------
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   audioCall: audioCallReducer,
   videoCall: videoCallReducer,
   conversation: conversationReducer,
+  chat: chatReducer
  
 });
 

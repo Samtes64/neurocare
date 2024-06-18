@@ -50,3 +50,4 @@ export const setTherapistForPatient = async (token, id) =>
   await API.post(`/therapist/settherapistforpatient${id}`,{}, {
     headers: { Authorization: `Bearer ${token}` },
   });
+  export const getMessages = (from, to) => API.get(`/messages/${from}/${to}`);

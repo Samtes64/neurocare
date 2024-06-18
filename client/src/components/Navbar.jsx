@@ -142,26 +142,43 @@ const Navbar = ({ currentUser }) => {
           NeuroCare
         </NavLogo>
 
-        <MobileMenu isOpen={isOpen}>
-          <Navlink to="/">Dashboard</Navlink>
-          <Navlink to="/todos">Todos</Navlink>
-          <Navlink to="/chat">chat</Navlink>
-          <Navlink to="/therapist">Therapist</Navlink>
-          
-        </MobileMenu>
-
-        <NavItems>
-          <Navlink to="/">Dashboard</Navlink>
-          <Navlink to="/todos">Todos</Navlink>
-          <Navlink to="/chat">chat</Navlink>
-          <Navlink to="/therapist">Therapist</Navlink>
-          
-        </NavItems>
+        {currentUser.userType === "patient" && (
+          <MobileMenu isOpen={isOpen}>
+            <Navlink to="/">Dashboard</Navlink>
+            <Navlink to="/todos">Todos</Navlink>
+            <Navlink to="/chat">chat</Navlink>
+            <Navlink to="/therapist">Therapist</Navlink>
+          </MobileMenu>
+        )}
+        {currentUser.userType === "patient" && (
+          <NavItems>
+            <Navlink to="/">Dashboard</Navlink>
+            <Navlink to="/todos">Todos</Navlink>
+            <Navlink to="/chat">chat</Navlink>
+            <Navlink to="/therapist">Therapist</Navlink>
+          </NavItems>
+        )}
+        {currentUser.userType === "therapist" && (
+          <NavItems>
+            <Navlink to="/">Profile</Navlink>
+            <Navlink to="/documents">Documents</Navlink>
+            <Navlink to="/chat">chat</Navlink>
+            <Navlink to="/patients">Patients</Navlink>
+          </NavItems>
+        )}
+        {currentUser.userType === "therapist" && (
+          <MobileMenu isOpen={isOpen}>
+            <Navlink to="/">Profile</Navlink>
+            <Navlink to="/documents">Documents</Navlink>
+            <Navlink to="/chat">chat</Navlink>
+            <Navlink to="/patients">Patients</Navlink>
+          </MobileMenu>
+        )}
 
         <UserContainer>
           {/* <Avatar src={currentUser?.img}>{currentUser?.firstName[0]}</Avatar>
           <TextButton onClick={() => dispatch(logout())}>Logout</TextButton> */}
-          <ProfileMenu/>
+          <ProfileMenu />
         </UserContainer>
       </NavContainer>
     </Nav>

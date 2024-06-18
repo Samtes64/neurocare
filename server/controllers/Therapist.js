@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Therapist from "../models/Therapist.js";
 import TherapistPatient from "../models/TherapistPatient.js";
+import OneToOneMessage from "../models/OneToOneMessage.js";
 
 export const getAllTherapists = async (req, res, next) => {
   try {
@@ -66,6 +67,10 @@ export const setTherapistForPatient=async(req,res,next)=>{
     })
 
     const saveTherapistPatient = await newTherapistPatient.save()
+
+    let new_chat = await OneToOneMessage.create({
+      participants: [userId, therapistId],
+    });
 
     return res.status(201).json(saveTherapistPatient);
 

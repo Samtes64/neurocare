@@ -28,7 +28,7 @@ const slice = createSlice({
           name: `${user?.firstName} ${user?.lastName}`,
           online: user?.status === "Online",
          
-          msg: el.messages.slice(-1)[0].text, 
+          // msg: el.messages.slice(-1)[0].text, 
           time: "9:36",
           unread: 0,
           pinned: false,
@@ -92,7 +92,7 @@ const slice = createSlice({
         id: el._id,
         type: "msg",
         subtype: el.type,
-        message: el.text,
+        // message: el.text,
         incoming: el.to === user_id,
         outgoing: el.from === user_id,
       }));
