@@ -25,6 +25,9 @@ import Therapists from "./pages/Therapists";
 import TherapistAuthentication from "./pages/TherapistAuthentication";
 import TherapistProfile from "./pages/TherapistProfile";
 
+import TherapistDashboard from "./pages/Therapist/TherapistDashboard";
+import MyPatients from "./pages/Therapist/MyPatients";
+
 const Loadable = (Component) => (props) => {
   return (
     <Suspense fallback={<LoadingScreen />}>
@@ -82,7 +85,9 @@ function App() {
             <Routes>
               {currentUser.userType === "therapist" && (
                 <>
-                  <Route path="/" exact element={<Profile />} />
+                  <Route path="/" exact element={<TherapistDashboard />} />
+                  <Route path="/patients" exact element={<MyPatients />} />
+                  <Route path="/profile" exact element={<Profile />} />
 
                 </>
               )}

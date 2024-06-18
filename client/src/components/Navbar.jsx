@@ -161,16 +161,18 @@ const Navbar = ({ currentUser }) => {
         {currentUser.userType === "therapist" && (
           <NavItems>
             {/* <Navlink to="/">Profile</Navlink> */}
-            <Navlink to="/patients">Patients</Navlink>
+            <Navlink to="/">Dashboard</Navlink>
             {/* <Navlink to="/documents">Documents</Navlink> */}
+            <Navlink to="/patients">patients</Navlink>
             <Navlink to="/chat">chat</Navlink>
           </NavItems>
         )}
         {currentUser.userType === "therapist" && (
           <MobileMenu isOpen={isOpen}>
             {/* <Navlink to="/">Profile</Navlink> */}
-            <Navlink to="/patients">Patients</Navlink>
+            <Navlink to="/">Dashboard</Navlink>
             {/* <Navlink to="/documents">Documents</Navlink> */}
+            <Navlink to="/patients">patients</Navlink>
             <Navlink to="/chat">chat</Navlink>
           </MobileMenu>
         )}
