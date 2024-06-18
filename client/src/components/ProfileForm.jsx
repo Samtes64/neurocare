@@ -9,13 +9,16 @@ import { MenuItem, Stack } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import RHFSelect from "./hook-form/RHFSelect";
+import { updateTherapistProfile } from "../api";
 // import { UpdateUserProfile } from "../../../redux/slices/app";
 // import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../../config";
 
 const ProfileForm = () => {
   const dispatch = useDispatch();
+
   const [file, setFile] = useState();
-  const { user } = useSelector((state) => state.app);
+  const { currentUser } = useSelector((state) => state.user);
+  const token = localStorage.getItem("fittrack-app-token");
 
   const ProfileSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
@@ -24,16 +27,16 @@ const ProfileForm = () => {
     phoneNumber: Yup.string().required("phone number is required"),
     specialization: Yup.string(),
     about: Yup.string().required("About is required"),
-    avatar: Yup.string().required("Avatar is required").nullable(true),
+    profileImage: Yup.string().required("Avatar is required").nullable(true),
   });
 
   const defaultValues = {
-    firstName: user?.firstName,
-    lastName: user?.lastName,
-    gender: user?.gender,
-    phoneNumber: user?.phoneNumber,
-    specialization: user?.specialization,
-    about: user?.about,
+    firstName: currentUser?.firstName,
+    lastName: currentUser?.lastName,
+    gender: currentUser?.gender,
+    phoneNumber: currentUser?.phoneNumber,
+    specialization: currentUser?.specialization,
+    about: currentUser?.about,
     // avatar: `https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${user?.avatar}`,
   };
 
@@ -54,16 +57,22 @@ const ProfileForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      //   Send API request
-      console.log("DATA", data);
-      dispatch();
-      // UpdateUserProfile({
-      //   firstName: data?.firstName,
-      //   about: data?.about,
-      //   avatar: file,
-      // })
+      const formData = new FormData();
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("gender", data.gender);
+      formData.append("phoneNumber", data.phoneNumber);
+      formData.append("specialization", data.specialization);
+      formData.append("about", data.about);
+      if (file) {
+        formData.append("profileImage", file);
+      }
+
+      const response = await updateTherapistProfile(token, formData);
+      console.log("Profile updated successfully:", response.data);
+      // Optionally, update the Redux state or show a success message
     } catch (error) {
-      console.error(error);
+      console.error("Error updating profile:", error);
     }
   };
 
@@ -78,7 +87,7 @@ const ProfileForm = () => {
       });
 
       if (file) {
-        setValue("avatar", newFile, { shouldValidate: true });
+        setValue("profileImage", newFile, { shouldValidate: true });
       }
     },
     [setValue]
@@ -87,7 +96,7 @@ const ProfileForm = () => {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={4}>
-        <RHFUploadAvatar name="avatar" maxSize={3145728} onDrop={handleDrop} />
+        <RHFUploadAvatar name="profileImage" maxSize={3145728} onDrop={handleDrop} />
 
         <RHFTextField
           helperText={"This name is visible to your contacts"}
@@ -100,8 +109,8 @@ const ProfileForm = () => {
           label="last Name"
         />
         <RHFSelect name="gender" label="Gender">
-          <MenuItem value="male">Male</MenuItem>
-          <MenuItem value="female">Female</MenuItem>
+          <MenuItem value="Male">Male</MenuItem>
+          <MenuItem value="Female">Female</MenuItem>
         </RHFSelect>
         <RHFTextField name="phoneNumber" label="Phone number" />
         <RHFTextField

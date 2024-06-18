@@ -27,6 +27,10 @@ const TherapistSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    profileImageName:{
+      type: String,
+      required: false,
+    },
   
     gender: {
       type: String,

@@ -3,7 +3,7 @@ import { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
-const Profile = () => {
+const ProfileT = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -263,4 +263,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileT;

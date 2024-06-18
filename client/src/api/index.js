@@ -51,3 +51,8 @@ export const setTherapistForPatient = async (token, id) =>
     headers: { Authorization: `Bearer ${token}` },
   });
   export const getMessages = (from, to) => API.get(`/messages/${from}/${to}`);
+
+  export const updateTherapistProfile = async (token, data) =>
+    API.put("/therapist/updatetherapist", data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });

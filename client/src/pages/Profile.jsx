@@ -5,6 +5,7 @@ import ProfileForm from "../components/ProfileForm";
 import { useDispatch } from "react-redux";
 // import { FetchUserProfile } from "../../../redux/slices/app";
 import { useNavigate } from "react-router-dom";
+import ProfileT from "./Therapist/ProfileT";
 
 
 
@@ -25,7 +26,7 @@ const Profile = () => {
             overflowY: "scroll",
 
             height: "100vh",
-            width: 320,
+            width: 500,
             backgroundColor: (theme) =>
               theme.palette.mode === "light"
                 ? "#F8FAFF"
@@ -60,7 +61,7 @@ const Profile = () => {
                 : theme.palette.background.paper,
             borderBottom: "6px solid #0162C4",
           }}
-        ></Box>
+        ><ProfileT/></Box>
       </Stack>
     </>
   );
