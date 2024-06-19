@@ -147,18 +147,16 @@ const TherapistProfile = () => {
     fullName,
     firstName,
     lastName,
-    city,
-    localarea,
-    salary,
-    salaryType,
-    profession,
+    phoneNumber,
+    specialization,
+    description,
+    profileImageName,
+    
 
     profilePicture,
-    age,
-    experience,
+    
     gender,
-    description,
-    phoneNumber,
+    
     brokerPhoneNumber,
     averageRating,
   } = therapist;
@@ -198,7 +196,7 @@ const TherapistProfile = () => {
   };
 
   return (
-    <div className="">
+    <div className="h-screen">
       <div className=" mb-10">
         <div className="bg-white text-black px-5 lg:px-20 py-3 flex flex-col lg:flex-row items-center gap-2 lg:gap-8 mb-5 justify-center">
           <div className="avatar">
@@ -221,20 +219,10 @@ const TherapistProfile = () => {
             </h2>
             <div className="flex items-center gap-8">
               <p href="#" className="text-primary text-sm">
-                {profession}
+                {specialization}
               </p>
-              <div className="flex items-center font-light">
-                <CiLocationOn size={16} className=" pb-[2px]" />
-                <p className="text-sm">
-                  {city}, {localarea}
-                </p>
-              </div>
-              <div className="flex items-center font-light">
-                <GiMoneyStack size={16} className=" text-slate-800 " />
-                <p className="text-sm">
-                  {salary} / {salaryType}
-                </p>{" "}
-              </div>
+              
+              
             </div>
 
             <div className="rating mb-4 mx-auto lg:mx-0">
@@ -315,22 +303,22 @@ const TherapistProfile = () => {
           </div>
           <div className="bg-white lg:w-2/5 w-full rounded-2xl p-9 flex flex-col gap-10">
             <div className="flex items-center gap-5">
-              <RiLoopLeftLine size={24} color="#1967D2" />
+              
               <div className="text-sm">
-                <p className=" font-semibold">Age</p>
-                <p className=" text-xs">{age}</p>
+                <p className=" font-semibold">Specialization</p>
+                <p className=" text-xs">{specialization}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-5">
-              <BsFillCalendarMinusFill size={20} color="#1967D2" />
+              
               <div className="text-sm">
-                <p className=" font-semibold">Experience</p>
-                <p className=" text-xs">{experience} years</p>
+                <p className=" font-semibold">Gender</p>
+                <p className=" text-xs">{gender}</p>
               </div>
             </div>
             <div className="flex items-center gap-5">
-              <BsFillPersonFill size={24} color="#1967D2" />
+             
               <div className="text-sm">
                 <p className=" font-semibold">Gender</p>
                 <p className=" text-xs">{gender}</p>
@@ -338,7 +326,7 @@ const TherapistProfile = () => {
             </div>
             {phoneNumber ? (
               <div className="flex items-center gap-5">
-                <BiPhone size={24} color="#1967D2" />
+                
                 <div className="text-sm">
                   <p className=" font-semibold">Phone number</p>
                   <p className=" text-xs">{phoneNumber}</p>

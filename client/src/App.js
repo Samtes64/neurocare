@@ -31,6 +31,7 @@ import ChatsPage from "./pages/ChatPage";
 import ApproveTherapist from "./pages/Admin/ApproveTherapist";
 import AllPatients from "./pages/Admin/AllPatients";
 import AllTherapists from "./pages/Admin/AllTherapists";
+import WaitingForApproval from "./pages/WaitingForApproval";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -57,7 +58,7 @@ const Container = styled.div`
 `;
 
 function App() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, userinfo } = useSelector((state) => state.user);
   return (
     <ThemeProvider theme={lightTheme}>
       <BrowserRouter>
@@ -90,13 +91,23 @@ function App() {
               )}
             </Routes>
             <Routes>
-              {currentUser.userType === "therapist" && (
-                <>
-                  <Route path="/" exact element={<TherapistDashboard />} />
-                  <Route path="/patients" exact element={<MyPatients />} />
+              {currentUser.userType === "therapist" ? (
+                userinfo.therapistApprovalStatus === "Approved" ? (
+                  <>
+                    <Route path="/" exact element={<TherapistDashboard />} />
+                    <Route path="/patients" exact element={<MyPatients />} />
+                    <Route path="/profile" exact element={<Profile />} />
+                    <Route path="/chat" exact element={<ChatsPage />} />
+                  </>
+                ) : (
+                  <>
+                  <Route path="*" element={<WaitingForApproval />} />
                   <Route path="/profile" exact element={<Profile />} />
-                  <Route path="/chat" exact element={<ChatsPage />} />
-                </>
+                  </>
+                )
+              ) : (
+                // Add routes for other user types here
+                <Route path="*" element={<div>Access Denied</div>} />
               )}
             </Routes>
             <Routes>
