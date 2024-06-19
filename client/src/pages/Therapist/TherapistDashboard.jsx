@@ -13,6 +13,7 @@ import EditAppointmentEdit from "./components/editAppointement";
 import FeedbackList from "./components/seemorefeedback"; // Assuming FeedbackList component is imported
 import UpcomingEvents from "./components/upcoming";
 import { Progress } from "./components/ui/progress";
+import { useNavigate } from "react-router-dom";
 
 const TherapistDashboard = () => {
   const [progress, setProgress] = useState(13);
@@ -21,6 +22,8 @@ const TherapistDashboard = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [showFeedbackList, setShowFeedbackList] = useState(false); // State for showing feedback list
+
+  const navigate = useNavigate();
 
   const patientsList = [
     {
@@ -115,6 +118,10 @@ const TherapistDashboard = () => {
     const timer = setTimeout(() => setProgress(16), 500);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleChatNavigation = () => {
+    navigate("/chat");
+  };
 
   useEffect(() => {
     // Filter patients based on search term
@@ -221,7 +228,10 @@ const TherapistDashboard = () => {
               </div>
             </CardContent>
             <CardFooter className="flex justify-end">
-              <button className="bg-blue-500 text-white font-medium rounded-md shadow-sm hover:bg-blue-400 p-2">
+              <button
+                onClick={handleChatNavigation}
+                className="bg-blue-500 text-white font-medium rounded-md shadow-sm hover:bg-blue-400 p-2"
+              >
                 Send text
               </button>
             </CardFooter>
