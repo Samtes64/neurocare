@@ -6,12 +6,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../components/ui/dialog";
-import MditAppointment from './makeAppoitement';// Import the EditAppointment component
+import MditAppointment from './makeAppoitement'; // Import the EditAppointment component
 import AssignTask from './assignTask'; // Import the AssignTask component
 import { PatientsD } from './patientsData';
-export default function ListOfPatients() {
- 
 
+export default function ListOfPatients() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPatients, setFilteredPatients] = useState(PatientsD); // Initialize with all patients
   const [selectedPatients, setSelectedPatients] = useState([]); // State to track selected patients

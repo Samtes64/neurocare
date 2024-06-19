@@ -100,3 +100,13 @@ export const hasDocument = async (token, therapistId) =>
   API.get(`/documents/hasDocument/${therapistId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+
+  export const getAllTreatmentCategories = async (token) =>
+    API.get("/treatment-categories", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    export const getTreatmentsByCategory = async (token, categoryId) =>
+      API.get(`/treatment/byCategory/${categoryId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });

@@ -1,4 +1,5 @@
-import  Treatment  from "../models/Treatment.js";
+import Treatment from "../models/Treatment.js";
+import mongoose from "mongoose";
 
 export const getAllTreatments = async (req, res, next) => {
   try {
@@ -27,5 +28,21 @@ export const addTreatment = async (req, res) => {
     res.status(201).json(savedTreatment);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getTreatmentsByCategory = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    console.log(categoryId);
+
+    
+
+    const treatments = await Treatment.find({ treatmentCategory: categoryId });
+
+    res.status(200).json(treatments);
+  } catch (error) {
+    console.error("Error fetching treatments by category:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

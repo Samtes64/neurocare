@@ -9,6 +9,7 @@ import TherapistRoutes from "./routes/Therapist.js"
 import messageRoutes from "./routes/Message.js"
 import documentRoutes from "./routes/Document.js"
 import therapistToPatientAssignedTaskRoutes from "./routes/TherapistToPatientAssignedTask.js"
+import treatmentCategoryRoutes from "./routes/TreatmentCategory.js"
 
 import http from "http";
 import DoneTaskRoutes from "./routes/DoneTask.js";
@@ -37,6 +38,8 @@ const io = new Server(server, {
 
 
 app.use("/api/user/", UserRoutes);
+
+app.use('/api/treatment-categories', treatmentCategoryRoutes);
 
 app.use("/api/treatment", TreatmentRoutes);
 
