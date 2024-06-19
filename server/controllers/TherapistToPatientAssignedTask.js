@@ -1,30 +1,21 @@
 import TherapistToPatientAssignedTask from "../models/TherapistToPatientAssignedTask.js";
 import { addDays, format, isValid, parseISO } from 'date-fns';
 
-const generateDateRange = (startDate, endDate) => {
-  const dates = [];
-  let currentDate = new Date(startDate);
-
-  while (currentDate <= new Date(endDate)) {
-    dates.push(format(currentDate, 'yyyy-MM-dd'));
-    currentDate = addDays(currentDate, 1);
-  }
-
-  return dates;
-};
-
 export const createTask = async (req, res, next) => {
   try {
     const { treatment, date, patients } = req.body;
     const therapistId = req.user?.id; // Assuming req.user contains the authenticated therapist's information
 
-    // Validate and parse date range
+    // Validate and parse date range or single date
     let dateRange;
     if (date.from && date.to) {
       // Handle date range
       const startDate = parseISO(date.from);
       const endDate = parseISO(date.to);
       dateRange = generateDateRange(startDate, endDate);
+    } else if (date.from && !date.to) {
+      // Handle single date
+      dateRange = [parseISO(date.from)];
     } else {
       return res.status(400).json({ message: "Invalid date format" });
     }
@@ -37,7 +28,7 @@ export const createTask = async (req, res, next) => {
         treatment,
         status: "Not completed",
         isActive: true,
-        date,
+        date: format(date, 'yyyy-MM-dd'), // Format date as needed
       }))
     ).flat(); // Flatten the array of arrays into a single array of tasks
 
@@ -48,6 +39,17 @@ export const createTask = async (req, res, next) => {
   } catch (error) {
     next(error); // Use next() to pass errors to the error handling middleware
   }
+};
+
+// Function to generate date range
+const generateDateRange = (startDate, endDate) => {
+  const dates = [];
+  let currentDate = startDate;
+  while (currentDate <= endDate) {
+    dates.push(currentDate);
+    currentDate = addDays(currentDate, 1);
+  }
+  return dates;
 };
 
 // Get all tasks
