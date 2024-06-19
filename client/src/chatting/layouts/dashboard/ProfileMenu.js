@@ -66,6 +66,8 @@ const ProfileMenu = () => {
                       navigate("/profile");
                     } else if (idx === 1) {
                       navigate("/settings");
+                    } else if (idx === 2) {
+                      navigate("/assessment");
                     } else {
                       dispatch(logout());
                       navigate("/");

@@ -3,6 +3,7 @@ import {
   ChatCircleDots,
   Gear,
   GearSix,
+  Note,
   Phone,
   SignOut,
   User,
@@ -17,6 +18,10 @@ const Profile_Menu = [
   {
     title: "Settings",
     icon: <Gear />,
+  },
+  {
+    title: "Assessment",
+    icon: <Note />,
   },
   {
     title: "Logout",

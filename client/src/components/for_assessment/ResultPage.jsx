@@ -36,7 +36,7 @@ const ResultPage = ({ prediction, score, onClickTry }) => {
         customStyle=" w-full md:w-fit bg-accent text-white dark:bg-primary px-8 py-2 rounded-full mt-auto md:mt-14 "
         onClickButton={onClickTry}
       >
-        Let's do it again
+        Finish
       </Button>
     </div>
   );

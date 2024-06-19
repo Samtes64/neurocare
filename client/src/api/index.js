@@ -116,11 +116,7 @@ export const createTask = async (token, taskData) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-// export const getAssignedTasksForPatient = async (token) => {
-//   API.get(`/therapistassignedtasks/patient`, {
-//     headers: { Authorization: `Bearer ${token}` },
-//   });
-// };
+
 
 export const getAssignedTasksForPatient = async (token) => {
   try {
@@ -132,3 +128,8 @@ export const getAssignedTasksForPatient = async (token) => {
     throw error; // Throw the error for the component to catch and handle
   }
 };
+
+export const updateDiagnosis = async (token, data) =>
+  API.put("/patient/update-diagnosis", data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });

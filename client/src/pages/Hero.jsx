@@ -66,9 +66,9 @@ function Hero() {
               </button>
               </Link>
               <Link to="/assessment">
-              <button className="ml-4 inline-flex items-center justify-center text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded-md text-lg shadow-lg">
+              {/* <button className="ml-4 inline-flex items-center justify-center text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded-md text-lg shadow-lg">
                 <span className="text-sm ">Take Assessment</span>
-              </button>
+              </button> */}
               </Link>
             </div>
           </div>

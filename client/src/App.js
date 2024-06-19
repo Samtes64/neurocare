@@ -82,6 +82,7 @@ function App() {
                   <Route path="/profile" exact element={<Profile />} />
                   <Route path="/therapist" exact element={<Therapists />} />
                   <Route path="/therapist/:id" element={<TherapistProfile />} />
+                  <Route path="/assessment" exact element={<Assessment />} />
                 </>
               )}
             </Routes>
@@ -117,7 +118,7 @@ function App() {
                 exact
                 element={<TherapistAuthentication loginProp={true} />}
               />
-              <Route path="/assessment" exact element={<Assessment />} />
+
               <Route path="/forgotpassword" exact element={<ResetPassword />} />
               <Route path="/newpassword" exact element={<NewPassword />} />
             </Routes>

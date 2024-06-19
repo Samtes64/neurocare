@@ -246,3 +246,29 @@ export const getDoneTasksByDate = async (req, res, next) => {
 
 // export const checkIfSubscriptionIsAvailable = async(req,res,next)
 
+
+
+export const updatePatientDiagnosis = async (req, res, next) => {
+  try {
+    const userId = req.user?.id;
+    const { diagnosis } = req.body;
+
+    if (!diagnosis) {
+      return next(createError(400, "Diagnosis data is required."));
+    }
+
+    const patient = await Patient.findOne({ user: userId });
+
+    if (!patient) {
+      return next(createError(404, "No patient found with the provided userId."));
+    }
+
+    patient.diagnosis = diagnosis;
+
+    await patient.save();
+
+    return res.status(200).json({ message: "Diagnosis updated successfully.", patient });
+  } catch (err) {
+    next(err);
+  }
+};
