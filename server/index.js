@@ -6,7 +6,7 @@ import TreatmentRoutes from "./routes/Treatment.js";
 import PatientRoutes from "./routes/Patient.js";
 import PaymentRoutes from "./routes/Payment.js";
 import TherapistRoutes from "./routes/Therapist.js"
-import messageRoutes from "./routes/Message.js"
+
 import documentRoutes from "./routes/Document.js"
 import therapistToPatientAssignedTaskRoutes from "./routes/TherapistToPatientAssignedTask.js"
 import treatmentCategoryRoutes from "./routes/TreatmentCategory.js"
@@ -15,7 +15,7 @@ import http from "http";
 import DoneTaskRoutes from "./routes/DoneTask.js";
 import { Server } from "socket.io";
 import User from "./models/User.js";
-import OneToOneMessage from "./models/OneToOneMessage.js";
+
 import express from "express"
 
 dotenv.config();
@@ -51,7 +51,7 @@ app.use("/api/payment/", PaymentRoutes);
 
 app.use("/api/therapist/", TherapistRoutes)
 
-app.use('/api/messages', messageRoutes);
+
 
 app.use('/api/documents', documentRoutes);
 

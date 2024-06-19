@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Therapist from "../models/Therapist.js";
 import TherapistPatient from "../models/TherapistPatient.js";
-import OneToOneMessage from "../models/OneToOneMessage.js";
+
 import multer from "multer";
 import path from "path";
 
@@ -177,9 +177,7 @@ export const setTherapistForPatient = async (req, res, next) => {
 
     const saveTherapistPatient = await newTherapistPatient.save();
 
-    let new_chat = await OneToOneMessage.create({
-      participants: [userId, therapistId],
-    });
+    
 
     return res.status(201).json(saveTherapistPatient);
   } catch (err) {
@@ -212,6 +210,52 @@ export const getTherapistByUserId = async (req, res) => {
   } catch (error) {
     // Handle any errors that occur during the retrieval process
     console.error("Error fetching therapist profile:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const getPatientsForTherapist = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    // Fetch the profile data by user ID
+    const therapist = await Therapist.findOne({
+      user: userId,
+    });
+
+    if (!therapist) {
+      // If the therapist profile is not found, return a 404 status with an error message
+      return res.status(404).json({ error: "Profile not found" });
+    }
+    const therapistId = therapist._id;
+
+    // Ensure the therapist ID is valid
+    if (!mongoose.Types.ObjectId.isValid(therapistId)) {
+      return res.status(400).json({ error: "Invalid therapist ID." });
+    }
+
+    // Find all patients associated with the therapist
+    const therapistPatients = await TherapistPatient.find({
+      therapist: therapistId,
+    })
+      .populate("therapist")
+      
+
+      console.log("hi " + therapistPatients)
+
+    // If no patients found, return an empty array
+    if (!therapistPatients || therapistPatients.length === 0) {
+      return res.status(200).json({ message: "No patients found.", data: [] });
+    }
+
+    // Map the result to return only patient data
+    const patients = therapistPatients.map((tp) => tp.patient);
+
+    return res
+      .status(200)
+      .json({ message: "Patients fetched successfully.", data: patients });
+  } catch (error) {
+    console.error("Error fetching patients for therapist:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };

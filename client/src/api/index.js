@@ -101,12 +101,17 @@ export const hasDocument = async (token, therapistId) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  export const getAllTreatmentCategories = async (token) =>
-    API.get("/treatment-categories", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+export const getAllTreatmentCategories = async (token) =>
+  API.get("/treatment-categories", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
-    export const getTreatmentsByCategory = async (token, categoryId) =>
-      API.get(`/treatment/byCategory/${categoryId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+export const getTreatmentsByCategory = async (token, categoryId) =>
+  API.get(`/treatment/byCategory/${categoryId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+export const getPatientsForTherapist = async (token) =>
+  API.get("/therapist/patients", {
+    headers: { Authorization: `Bearer ${token}` },
+  });

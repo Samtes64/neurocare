@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { createError } from "../error.js";
 import User from "../models/User.js";
-import Workout from "../models/Workout.js";
+
 import Patient from "../models/Patient.js";
 import Therapist from "../models/Therapist.js";
 import otpGenerator from "otp-generator";

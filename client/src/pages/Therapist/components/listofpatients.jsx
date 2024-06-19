@@ -8,17 +8,42 @@ import {
 } from "../components/ui/dialog";
 import MditAppointment from './makeAppoitement'; // Import the EditAppointment component
 import AssignTask from './assignTask'; // Import the AssignTask component
-import { PatientsD } from './patientsData';
+import { getPatientsForTherapist } from '../../../api'; // Import the API function
 
 export default function ListOfPatients() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredPatients, setFilteredPatients] = useState(PatientsD); // Initialize with all patients
+  const [filteredPatients, setFilteredPatients] = useState([]); // Initialize with all patients
   const [selectedPatients, setSelectedPatients] = useState([]); // State to track selected patients
   const [dialogType, setDialogType] = useState(null); // State to track which dialog to show
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const token = localStorage.getItem("fittrack-app-token");
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      if (!token) {
+        setError('No authentication token found.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await getPatientsForTherapist(token);
+        setFilteredPatients(response.data); // Adjust based on the API response structure
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatients();
+  }, [token]);
 
   useEffect(() => {
     // Filter patients based on search term
-    const filtered = PatientsD.filter(patient =>
+    const filtered = filteredPatients.filter(patient =>
       patient.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredPatients(filtered);
@@ -39,6 +64,9 @@ export default function ListOfPatients() {
   const closeDialog = () => {
     setDialogType(null);
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="mt-5 max-w-screen-xl mx-auto px-4">
@@ -84,7 +112,7 @@ export default function ListOfPatients() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredPatients.map(patient => (
+      {Array.isArray(filteredPatients) && filteredPatients.map(patient => (
           <div
             key={patient.id}
             className={`border border-gray-300 rounded-md p-4 cursor-pointer transition-colors duration-300 ${selectedPatients.includes(patient) ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'}`}
