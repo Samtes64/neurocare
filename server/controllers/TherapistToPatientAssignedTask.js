@@ -1,5 +1,13 @@
+import Patient from "../models/Patient.js";
 import TherapistToPatientAssignedTask from "../models/TherapistToPatientAssignedTask.js";
-import { addDays, format, isValid, parseISO } from 'date-fns';
+import {
+  addDays,
+  format,
+  isValid,
+  parseISO,
+  startOfDay,
+  endOfDay,
+} from "date-fns";
 
 export const createTask = async (req, res, next) => {
   try {
@@ -21,16 +29,18 @@ export const createTask = async (req, res, next) => {
     }
 
     // Prepare tasks to be created
-    const tasks = patients.map(patientId =>
-      dateRange.map(date => ({
-        therapist: therapistId,
-        patient: patientId,
-        treatment,
-        status: "Not completed",
-        isActive: true,
-        date: format(date, 'yyyy-MM-dd'), // Format date as needed
-      }))
-    ).flat(); // Flatten the array of arrays into a single array of tasks
+    const tasks = patients
+      .map((patientId) =>
+        dateRange.map((date) => ({
+          therapist: therapistId,
+          patient: patientId,
+          treatment,
+          status: "Not completed",
+          isActive: true,
+          date: format(date, "yyyy-MM-dd"), // Format date as needed
+        }))
+      )
+      .flat(); // Flatten the array of arrays into a single array of tasks
 
     // Save all tasks to the database
     const createdTasks = await TherapistToPatientAssignedTask.insertMany(tasks);
@@ -108,5 +118,37 @@ export const deleteTask = async (req, res) => {
     res.status(200).json({ message: "Task deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const getAssignedTasksForPatient = async (req, res, next) => {
+  const userId = req.user?.id;
+
+  try {
+    // Step 1: Find the patient based on userId
+    const patient = await Patient.findOne({ user: userId });
+
+    if (!patient) {
+      return next(
+        createError(404, "No patient found with the provided userId.")
+      );
+    }
+
+    // Step 2: Calculate start and end of the current day
+    const todayStart = startOfDay(new Date()); // Start of the current day
+    const todayEnd = endOfDay(new Date()); // End of the current day
+
+    // Step 3: Fetch assigned tasks for the patient for today only
+    const assignedTasks = await TherapistToPatientAssignedTask.find({
+      patient: patient._id,
+      date: { $gte: todayStart, $lte: todayEnd }, // Filter tasks for today only
+    }).populate("treatment");
+
+    // Step 4: Respond with the assigned tasks
+    return res
+      .status(200)
+      .json({ message: "Tasks fetched", data: assignedTasks });
+  } catch (error) {
+    next(error); // Pass any errors to the error handling middleware
   }
 };

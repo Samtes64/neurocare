@@ -22,8 +22,6 @@ export const getDoneTasks = async (token, date) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-
-
 export const addDoneTask = async (token, data) =>
   await API.post(`/tasks/adddonetask`, data, {
     headers: { Authorization: `Bearer ${token}` },
@@ -113,7 +111,24 @@ export const getPatientsForTherapist = async (token) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  export const createTask = async (token, taskData) =>
-    API.post("/therapistassignedtasks", taskData, {
+export const createTask = async (token, taskData) =>
+  API.post("/therapistassignedtasks", taskData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+// export const getAssignedTasksForPatient = async (token) => {
+//   API.get(`/therapistassignedtasks/patient`, {
+//     headers: { Authorization: `Bearer ${token}` },
+//   });
+// };
+
+export const getAssignedTasksForPatient = async (token) => {
+  try {
+    const response = await API.get('/therapistassignedtasks/patient', {
       headers: { Authorization: `Bearer ${token}` },
     });
+    return response.data; // Assuming the API returns an object with a `data` property
+  } catch (error) {
+    throw error; // Throw the error for the component to catch and handle
+  }
+};

@@ -5,6 +5,7 @@ import {
   getTaskById,
   updateTask,
   deleteTask,
+  getAssignedTasksForPatient,
 } from "../controllers/TherapistToPatientAssignedTask.js";
 
 
@@ -18,12 +19,14 @@ router.post("/", verifyToken, createTask);
 router.get("/", verifyToken, getTasks);
 
 // Get a task by ID
-router.get("/:id", verifyToken, getTaskById);
+// router.get("/:id", verifyToken, getTaskById);
 
 // Update a task
 router.put("/:id", verifyToken, updateTask);
 
 // Delete a task
 router.delete("/:id", verifyToken, deleteTask);
+
+router.get('/patient',verifyToken, getAssignedTasksForPatient);
 
 export default router;

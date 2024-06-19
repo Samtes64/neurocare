@@ -238,7 +238,7 @@ const Dashboard = () => {
         <FlexWrap>
           <WeeklyStatCard data={data} />
           <CategoryChart data={data} />
-          <AddDoneTask
+          {/* <AddDoneTask
             treatment={treatment}
             setTreatment={setTreatment}
             duration={duration}
@@ -248,7 +248,7 @@ const Dashboard = () => {
             addNewDoneTask={addNewDoneTask}
             buttonLoading={buttonLoading}
             validateInputs={validateInputs}
-          />
+          /> */}
         </FlexWrap>
 
         <Section>
