@@ -4,6 +4,7 @@ import TherapistPatient from "../models/TherapistPatient.js";
 
 import multer from "multer";
 import path from "path";
+import Patient from "../models/Patient.js";
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -165,19 +166,23 @@ export const getTherapistById = async (req, res, next) => {
 export const setTherapistForPatient = async (req, res, next) => {
   try {
     const userId = req.user?.id;
-
     const therapistId = req.query.id;
 
+    // Find the patient by user ID
+    const patient = await Patient.findOne({ user: userId });
+
+    if (!patient) {
+      return res.status(404).json({ error: "Patient not found." });
+    }
+
     const newTherapistPatient = new TherapistPatient({
-      patient: userId,
+      patient: patient._id, // Use the patient's _id
       therapist: therapistId,
       date: Date.now(),
       isValid: true,
     });
 
     const saveTherapistPatient = await newTherapistPatient.save();
-
-    
 
     return res.status(201).json(saveTherapistPatient);
   } catch (err) {
@@ -237,19 +242,32 @@ export const getPatientsForTherapist = async (req, res, next) => {
     // Find all patients associated with the therapist
     const therapistPatients = await TherapistPatient.find({
       therapist: therapistId,
-    })
-      .populate("therapist")
-      
+    });
 
-      console.log("hi " + therapistPatients)
+    console.log(therapistPatients);
+
+    // Extract patient IDs
+    const patientIds = therapistPatients.map((tp) => tp.patient);
+
+    console.log(patientIds);
 
     // If no patients found, return an empty array
-    if (!therapistPatients || therapistPatients.length === 0) {
+    if (patientIds.length === 0) {
       return res.status(200).json({ message: "No patients found.", data: [] });
     }
 
-    // Map the result to return only patient data
-    const patients = therapistPatients.map((tp) => tp.patient);
+    // Initialize an array to store patient documents
+    const patients = [];
+
+    // Loop through each patient ID and fetch the patient document
+    for (const patientId of patientIds) {
+      console.log(patientId);
+      const patient = await Patient.findById(patientId);
+      console.log(patient);
+      if (patient) {
+        patients.push(patient);
+      }
+    }
 
     return res
       .status(200)
