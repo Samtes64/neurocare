@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "../components/ui/dialog";
 import MditAppointment from "./makeAppoitement"; // Import the EditAppointment component
 import AssignTask from "./assignTask"; // Import the AssignTask component
 import { getPatientsForTherapist } from "../../../api"; // Import the API function
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 export default function ListOfPatients() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredPatients, setFilteredPatients] = useState([]); // Initialize with all patients
+  const [patients, setPatients] = useState([]); // Original list of patients
+  const [filteredPatients, setFilteredPatients] = useState([]); // State for filtered patients
   const [selectedPatients, setSelectedPatients] = useState([]); // State to track selected patients
   const [dialogType, setDialogType] = useState(null); // State to track which dialog to show
   const [loading, setLoading] = useState(true);
@@ -30,7 +31,8 @@ export default function ListOfPatients() {
 
       try {
         const response = await getPatientsForTherapist(token);
-        setFilteredPatients(response.data); // Adjust based on the API response structure
+        setPatients(response.data.data); // Store the original list of patients
+        setFilteredPatients(response.data.data); // Initialize filteredPatients
       } catch (error) {
         setError(error.message);
       } finally {
@@ -43,11 +45,11 @@ export default function ListOfPatients() {
 
   useEffect(() => {
     // Filter patients based on search term
-    const filtered = filteredPatients.filter((patient) =>
-      patient.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filtered = patients.filter((patient) =>
+      patient.firstName.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredPatients(filtered);
-  }, [searchTerm]); // Only depend on searchTerm
+  }, [patients, searchTerm]); // Update filteredPatients whenever patients or searchTerm change
 
   const handlePatientSelect = (patient) => {
     if (selectedPatients.includes(patient)) {
@@ -78,9 +80,7 @@ export default function ListOfPatients() {
           <div className="flex space-x-4">
             <button
               className={`bg-blue-500 text-white py-2 px-4 rounded-md text-lg font-medium transition-opacity duration-300 ${
-                selectedPatients.length === 0
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
+                selectedPatients.length === 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
               onClick={() => openDialog("appointment")}
               disabled={selectedPatients.length === 0}
@@ -89,9 +89,7 @@ export default function ListOfPatients() {
             </button>
             <button
               className={`border-2 border-white py-2 px-4 rounded-md text-lg font-medium transition-opacity duration-300 ${
-                selectedPatients.length === 0
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
+                selectedPatients.length === 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
               onClick={() => openDialog("task")}
               disabled={selectedPatients.length === 0}
@@ -114,32 +112,24 @@ export default function ListOfPatients() {
           />
         </div>
         <div className="mt-4 lg:mt-0 space-x-3">
-          <span className="text-gray-600 font-medium">
-            {filteredPatients.length} Patients
-          </span>
-          <span className="text-gray-600 font-medium">
-            {selectedPatients.length} selected
-          </span>
+          <span className="text-gray-600 font-medium">{filteredPatients.length} Patients</span>
+          <span className="text-gray-600 font-medium">{selectedPatients.length} selected</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {Array.isArray(filteredPatients) &&
-          filteredPatients.map((patient) => (
-            <div
-              key={patient.id}
-              className={`border border-gray-300 rounded-md p-4 cursor-pointer transition-colors duration-300 ${
-                selectedPatients.includes(patient)
-                  ? "bg-blue-500 text-white"
-                  : "bg-white text-gray-700"
-              }`}
-              onClick={() => handlePatientSelect(patient)}
-            >
-              <h2 className="text-lg font-semibold">{patient.name}</h2>
-              <p className="text-sm">{patient.age} years old</p>
-              <p className="text-sm">{patient.diagnosis}</p>
-            </div>
-          ))}
+        {filteredPatients.map((patient) => (
+          <div
+            key={patient.id}
+            className={`border border-gray-300 rounded-md p-4 cursor-pointer transition-colors duration-300 ${
+              selectedPatients.includes(patient) ? "bg-blue-500 text-white" : "bg-white text-gray-700"
+            }`}
+            onClick={() => handlePatientSelect(patient)}
+          >
+            <h2 className="text-lg font-semibold">{patient.firstName + " " + patient.lastName}</h2>
+            {/* Include other patient details here */}
+          </div>
+        ))}
       </div>
 
       <Dialog open={!!dialogType} onOpenChange={closeDialog}>
@@ -148,9 +138,7 @@ export default function ListOfPatients() {
             <DialogTitle>
               <div className="flex justify-between">
                 <h3 className="font-bold text-lg">
-                  {dialogType === "appointment"
-                    ? "Edit Appointment"
-                    : "Assign Task"}
+                  {dialogType === "appointment" ? "Edit Appointment" : "Assign Task"}
                 </h3>
               </div>
             </DialogTitle>
