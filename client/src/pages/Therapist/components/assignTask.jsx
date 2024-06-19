@@ -6,18 +6,12 @@ const AssignTask = ({ patients }) => {
   const [treatmentCategory, setTreatmentCategory] = useState('');
   const [treatment, setTreatment] = useState('');
   const [date, setDate] = useState({ from: null, to: null });
-
+  const [successMessage, setSuccessMessage] = useState('');
 
   const token = localStorage.getItem("fittrack-app-token");
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log({treatmentCategory,
-      treatment,
-      date,
-      patients,})
 
     try {
       // Prepare task data
@@ -33,10 +27,16 @@ const AssignTask = ({ patients }) => {
 
       console.log('Task created:', response.data); // Log the response data if needed
 
-      // Reset form fields
-      setTreatmentCategory('');
-      setTreatment('');
-      setDate({ from: null, to: null });
+      // Show success message
+      setSuccessMessage('Tasks assigned successfully!');
+
+      // Reset form fields after a short delay
+      setTimeout(() => {
+        setTreatmentCategory('');
+        setTreatment('');
+        setDate({ from: null, to: null });
+        setSuccessMessage('');
+      }, 3000); // Reset fields and message after 3 seconds
 
     } catch (error) {
       console.error('Error creating task:', error);
@@ -44,11 +44,9 @@ const AssignTask = ({ patients }) => {
     }
   };
 
-
   const [categorieoptions, setCategorieOptions] = useState([]);
   const [treatments, setTreatments] = useState([]);
 
-   // Replace with your authentication token logic
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -63,7 +61,6 @@ const AssignTask = ({ patients }) => {
   }, []);
 
   useEffect(() => {
-
     const fetchTreatments = async () => {
       try {
         const response = await getTreatmentsByCategory(token, treatmentCategory);
@@ -92,12 +89,10 @@ const AssignTask = ({ patients }) => {
             >
               <option value="">Select a category</option>
               {categorieoptions.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {" "}
-                        {/* Updated this line */}
-                        {category.categoryName}
-                      </option>
-                    ))}
+                <option key={category._id} value={category._id}>
+                  {category.categoryName}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -111,13 +106,10 @@ const AssignTask = ({ patients }) => {
             >
               <option value="">Select a treatment</option>
               {treatments.map((treatment) => (
-                      <option key={treatment._id} value={treatment._id}>
-                        {" "}
-                        {/* Updated this line */}
-                        {treatment.treatmentName}
-                      </option>
-                    ))}
-              {/* Add other options as needed */}
+                <option key={treatment._id} value={treatment._id}>
+                  {treatment.treatmentName}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -132,6 +124,11 @@ const AssignTask = ({ patients }) => {
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md w-full hover:bg-blue-700 transition duration-300">Done</button>
           </div>
         </form>
+        {successMessage && (
+          <div className="mt-4 p-3 bg-green-100 text-green-700 border border-green-400 rounded">
+            {successMessage}
+          </div>
+        )}
       </div>
     </div>
   );
