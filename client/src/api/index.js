@@ -133,3 +133,8 @@ export const updateDiagnosis = async (token, data) =>
   API.put("/patient/update-diagnosis", data, {
     headers: { Authorization: `Bearer ${token}` },
   });
+
+  export const createAppointment = async (token, appointmentData) =>
+    API.post("/appointment", appointmentData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });

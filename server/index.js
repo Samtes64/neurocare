@@ -10,6 +10,7 @@ import TherapistRoutes from "./routes/Therapist.js"
 import documentRoutes from "./routes/Document.js"
 import therapistToPatientAssignedTaskRoutes from "./routes/TherapistToPatientAssignedTask.js"
 import treatmentCategoryRoutes from "./routes/TreatmentCategory.js"
+import AppointmentRoutes from "./routes/Appointment.js"
 
 import http from "http";
 import DoneTaskRoutes from "./routes/DoneTask.js";
@@ -50,6 +51,7 @@ app.use("/api/patient", PatientRoutes);
 app.use("/api/payment/", PaymentRoutes);
 
 app.use("/api/therapist/", TherapistRoutes)
+app.use("/api/appointment/", AppointmentRoutes)
 
 
 

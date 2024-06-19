@@ -9,6 +9,7 @@ import MditAppointment from "./makeAppoitement"; // Import the EditAppointment c
 import AssignTask from "./assignTask"; // Import the AssignTask component
 import { getPatientsForTherapist } from "../../../api"; // Import the API function
 import { DialogDescription } from "@radix-ui/react-dialog";
+import AddAppointment from "./AddAppointment";
 
 export default function ListOfPatients() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -138,14 +139,14 @@ export default function ListOfPatients() {
             <DialogTitle>
               <div className="flex justify-between">
                 <h3 className="font-bold text-lg">
-                  {dialogType === "appointment" ? "Edit Appointment" : "Assign Task"}
+                  {dialogType === "appointment" ? "" : "Assign Task"}
                 </h3>
               </div>
             </DialogTitle>
           </DialogHeader>
           <DialogDescription>
             {dialogType === "appointment" && selectedPatients.length > 0 && (
-              <MditAppointment patients={selectedPatients} />
+              <AddAppointment patients={selectedPatients} />
             )}
             {dialogType === "task" && selectedPatients.length > 0 && (
               <AssignTask patients={selectedPatients} />

@@ -1,26 +1,38 @@
 import React, { useState } from 'react';
-import { Calendar } from "./ui/calendar";
+import axios from 'axios';
+import { Calendar } from './ui/calendar';
 
-export default function MditAppointment({ patient }) {
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+const MditAppointment = ({ patient }) => {
+  // const [startTime, setStartTime] = useState('');
+  const [dateTime, setDateTime] = useState('');
   const [error, setError] = useState('');
   const [date, setDate] = useState(new Date());
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (endTime <= startTime) {
-      setError('End time must be after start time');
-    } else {
-      setError('');
-      alert(`Start Time: ${startTime}, End Time: ${endTime}`);
-    }
+    
+      try {
+        const response = await axios.post('/api/appointments/create', {
+          
+          dateTime,
+          appointmentDateTime: dateTime, // Convert date to ISO string format
+        });
+
+        console.log('Appointment created:', response.data);
+        alert('Appointment created successfully!');
+      } catch (error) {
+        console.error('Error creating appointment:', error);
+        alert('Failed to create appointment');
+      }
+    
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="start-time" className="block text-sm font-medium text-gray-700">Start Time</label>
+      {/* <div>
+        <label htmlFor="start-time" className="block text-sm font-medium text-gray-700">
+          Start Time
+        </label>
         <input
           type="time"
           id="start-time"
@@ -29,14 +41,16 @@ export default function MditAppointment({ patient }) {
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           required
         />
-      </div>
+      </div> */}
       <div>
-        <label htmlFor="end-time" className="block text-sm font-medium text-gray-700">End Time</label>
+        <label htmlFor="end-time" className="block text-sm font-medium text-gray-700">
+          End Time
+        </label>
         <input
           type="time"
           id="end-time"
-          value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
+          value={dateTime}
+          onChange={(e) => setDateTime(e.target.value)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           required
         />
@@ -44,12 +58,7 @@ export default function MditAppointment({ patient }) {
       {error && <div className="text-red-500 text-sm">{error}</div>}
       <div className="flex flex-col sm:flex-col">
         <div className="w-full ">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="mt-1 rounded-md border"
-          />
+          <Calendar mode="single" selected={date} onSelect={setDate} className="mt-1 rounded-md border" />
         </div>
         <div className="w-full ">
           <button
@@ -62,4 +71,6 @@ export default function MditAppointment({ patient }) {
       </div>
     </form>
   );
-}
+};
+
+export default MditAppointment;
