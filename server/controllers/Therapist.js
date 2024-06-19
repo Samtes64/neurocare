@@ -261,9 +261,8 @@ export const getPatientsForTherapist = async (req, res, next) => {
 
     // Loop through each patient ID and fetch the patient document
     for (const patientId of patientIds) {
-      console.log(patientId);
       const patient = await Patient.findById(patientId);
-      console.log(patient);
+
       if (patient) {
         patients.push(patient);
       }

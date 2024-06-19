@@ -120,11 +120,11 @@ export default function ListOfPatients() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredPatients.map((patient) => (
           <div
-            key={patient.id}
+            key={patient._id}
             className={`border border-gray-300 rounded-md p-4 cursor-pointer transition-colors duration-300 ${
-              selectedPatients.includes(patient) ? "bg-blue-500 text-white" : "bg-white text-gray-700"
+              selectedPatients.includes(patient._id) ? "bg-blue-500 text-white" : "bg-white text-gray-700"
             }`}
-            onClick={() => handlePatientSelect(patient)}
+            onClick={() => handlePatientSelect(patient._id)}
           >
             <h2 className="text-lg font-semibold">{patient.firstName + " " + patient.lastName}</h2>
             {/* Include other patient details here */}

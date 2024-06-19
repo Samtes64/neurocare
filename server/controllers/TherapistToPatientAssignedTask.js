@@ -14,47 +14,41 @@ const generateDateRange = (startDate, endDate) => {
 };
 
 export const createTask = async (req, res, next) => {
-    try {
-      const { treatment, date, patients } = req.body;
-      const therapistId = req.user?.id; // Assuming req.user contains the authenticated therapist's information
-  
-      // Check if date is a single date, a range, or a single digit
-      let dateRange;
-      if (typeof date === 'string' && isValid(parseISO(date))) {
-        dateRange = [date]; // Single date string
-      } else if (typeof date === 'object' && date.start && date.end && isValid(parseISO(date.start)) && isValid(parseISO(date.end))) {
-        dateRange = generateDateRange(date.start, date.end); // Date range
-      } else if (typeof date === 'number') {
-        const today = new Date();
-        const taskDate = format(addDays(today, date - 1), 'yyyy-MM-dd'); // Single digit date (1 = today, 2 = tomorrow, etc.)
-        dateRange = [taskDate];
-      } else {
-        return res.status(400).json({ message: "Invalid date format" });
-      }
-  
-      // Prepare tasks to be created
-      const tasks = [];
-      patients.forEach(patientId => {
-        dateRange.forEach(date => {
-          tasks.push({
-            therapist: therapistId,
-            patient: patientId,
-            treatment,
-            status: "Not completed",
-            isActive: true,
-            date,
-          });
-        });
-      });
-  
-      // Save all tasks to the database
-      const createdTasks = await TherapistToPatientAssignedTask.insertMany(tasks);
-  
-      res.status(201).json(createdTasks);
-    } catch (error) {
-      next(error); // Use next() to pass errors to the error handling middleware
+  try {
+    const { treatment, date, patients } = req.body;
+    const therapistId = req.user?.id; // Assuming req.user contains the authenticated therapist's information
+
+    // Validate and parse date range
+    let dateRange;
+    if (date.from && date.to) {
+      // Handle date range
+      const startDate = parseISO(date.from);
+      const endDate = parseISO(date.to);
+      dateRange = generateDateRange(startDate, endDate);
+    } else {
+      return res.status(400).json({ message: "Invalid date format" });
     }
-  };
+
+    // Prepare tasks to be created
+    const tasks = patients.map(patientId =>
+      dateRange.map(date => ({
+        therapist: therapistId,
+        patient: patientId,
+        treatment,
+        status: "Not completed",
+        isActive: true,
+        date,
+      }))
+    ).flat(); // Flatten the array of arrays into a single array of tasks
+
+    // Save all tasks to the database
+    const createdTasks = await TherapistToPatientAssignedTask.insertMany(tasks);
+
+    res.status(201).json(createdTasks);
+  } catch (error) {
+    next(error); // Use next() to pass errors to the error handling middleware
+  }
+};
 
 // Get all tasks
 export const getTasks = async (req, res) => {

@@ -22,10 +22,7 @@ export const getDoneTasks = async (token, date) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-export const addWorkout = async (token, data) =>
-  await API.post(`/user/workout`, data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+
 
 export const addDoneTask = async (token, data) =>
   await API.post(`/tasks/adddonetask`, data, {
@@ -115,3 +112,8 @@ export const getPatientsForTherapist = async (token) =>
   API.get("/therapist/patients", {
     headers: { Authorization: `Bearer ${token}` },
   });
+
+  export const createTask = async (token, taskData) =>
+    API.post("/therapistassignedtasks", taskData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });

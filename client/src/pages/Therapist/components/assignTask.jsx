@@ -1,30 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { DatePickerWithRange } from "../components/ui/datepicker";
-import { getAllTreatmentCategories, getTreatmentsByCategory } from '../../../api';
+import { createTask, getAllTreatmentCategories, getTreatmentsByCategory } from '../../../api';
 
 const AssignTask = ({ patients }) => {
   const [treatmentCategory, setTreatmentCategory] = useState('');
   const [treatment, setTreatment] = useState('');
-  const [dateRange, setDateRange] = useState({ from: null, to: null });
+  const [date, setDate] = useState({ from: null, to: null });
 
-  const handleSubmit = (e) => {
+
+  const token = localStorage.getItem("fittrack-app-token");
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      treatmentCategory,
+
+    console.log({treatmentCategory,
       treatment,
-      dateRange,
-      patients, // Include selected patients in the console log output
-    });
-    // Reset form fields
-    setTreatmentCategory('');
-    setTreatment('');
-    setDateRange({ from: null, to: null });
+      date,
+      patients,})
+
+    try {
+      // Prepare task data
+      const taskData = {
+        treatmentCategory,
+        treatment,
+        date,
+        patients,
+      };
+
+      // Call API to create task
+      const response = await createTask(token, taskData); // Assuming token is defined somewhere in your component or context
+
+      console.log('Task created:', response.data); // Log the response data if needed
+
+      // Reset form fields
+      setTreatmentCategory('');
+      setTreatment('');
+      setDate({ from: null, to: null });
+
+    } catch (error) {
+      console.error('Error creating task:', error);
+      // Handle error as needed (show error message, etc.)
+    }
   };
+
 
   const [categorieoptions, setCategorieOptions] = useState([]);
   const [treatments, setTreatments] = useState([]);
 
-  const token = "your_auth_token_here"; // Replace with your authentication token logic
+   // Replace with your authentication token logic
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -99,8 +123,8 @@ const AssignTask = ({ patients }) => {
           <div>
             <label className="block font-semibold mb-1 text-gray-700">Date Range:</label>
             <DatePickerWithRange
-              dateRange={dateRange}
-              setDateRange={setDateRange}
+              dateRange={date}
+              setDateRange={setDate}
               className="w-full"
             />
           </div>
