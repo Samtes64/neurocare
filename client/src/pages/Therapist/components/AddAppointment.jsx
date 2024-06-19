@@ -1,6 +1,7 @@
 // AddAppointment.js
 
 import React, { useState } from 'react';
+import { createAppointment } from '../../../api';
 
 const AddAppointment = ({ patients }) => {
   const [appointmentDetails, setAppointmentDetails] = useState({
@@ -8,9 +9,20 @@ const AddAppointment = ({ patients }) => {
     time: '',
   });
 
-  const handleSubmit = (event) => {
+  const token = localStorage.getItem("fittrack-app-token");
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Form submitted with:', appointmentDetails,patients);
+
+    const appointmentData={
+      appointmentDateTime:appointmentDetails,
+      patientIds:patients
+    }
+    console.log('Form submitted with:', appointmentData);
+    const response = await createAppointment(token,appointmentData)
+    
+    console.log('Task created:', response.data); // Log the response data if needed
+
     // You can add logic here to send data to API or perform other actions
     // For demonstration, let's clear the form after submission
     setAppointmentDetails({

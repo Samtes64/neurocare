@@ -28,6 +28,9 @@ import TherapistProfile from "./pages/TherapistProfile";
 import TherapistDashboard from "./pages/Therapist/TherapistDashboard";
 import MyPatients from "./pages/Therapist/MyPatients";
 import ChatsPage from "./pages/ChatPage";
+import ApproveTherapist from "./pages/Admin/ApproveTherapist";
+import AllPatients from "./pages/Admin/AllPatients";
+import AllTherapists from "./pages/Admin/AllTherapists";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -93,6 +96,17 @@ function App() {
                   <Route path="/patients" exact element={<MyPatients />} />
                   <Route path="/profile" exact element={<Profile />} />
                   <Route path="/chat" exact element={<ChatsPage />} />
+                </>
+              )}
+            </Routes>
+            <Routes>
+              {currentUser.userType === "admin" && (
+                <>
+                  {/* <Route path="/" exact element={<TherapistDashboard />} /> */}
+                  <Route path="/approve" exact element={<ApproveTherapist />} />
+                  <Route path="/" exact element={<AllPatients />} />
+                  <Route path="/therapist" exact element={<AllTherapists />} />
+                  {/* <Route path="/chat" exact element={<ChatsPage />} />  */}
                 </>
               )}
             </Routes>

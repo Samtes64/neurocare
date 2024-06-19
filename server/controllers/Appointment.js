@@ -13,18 +13,24 @@ export const createAppointment = async (req, res, next) => {
     }
 
     // Determine if it's a group appointment based on number of patientIds
+    const { date, time } = appointmentDateTime;
+    const appointmentDate = new Date(`${date}T${time}:00Z`);
+
+    // Determine if it's a group appointment based on number of patientIds
     const isGroupAppointment = patientIds.length > 1;
 
     const newAppointment = new Appointment({
       therapistId: therapist._id,
       patientIds,
       isGroupAppointment,
-      appointmentDateTime,
+      appointmentDateTime: appointmentDate, // Use the converted Date object here
     });
+
 
     const savedAppointment = await newAppointment.save();
     res.status(201).json(savedAppointment);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: error.message });
   }
 };

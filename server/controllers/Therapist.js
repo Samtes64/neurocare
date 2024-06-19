@@ -276,3 +276,59 @@ export const getPatientsForTherapist = async (req, res, next) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+export const getAllUnverifiedTherapists = async (req, res) => {
+  try {
+    const unverifiedTherapists = await Therapist.find({
+      approvalStatus: "Pending"
+    });
+
+    res.status(200).json(unverifiedTherapists);
+  } catch (error) {
+    console.error("Error fetching unverified therapists:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const approveTherapist = async (req, res) => {
+
+ 
+  const therapistId = req.params.therapistId;
+
+  try {
+    // Check if the user is authorized (e.g., admin)
+    
+
+    // Validate therapistId as a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(therapistId)) {
+      return res.status(400).json({ message: "Invalid therapist ID." });
+    }
+
+    // Find the therapist by ID
+    const therapist = await Therapist.findById(therapistId);
+
+    if (!therapist) {
+      return res.status(404).json({ message: "Therapist not found." });
+    }
+
+    // Update approvalStatus to "Approved"
+    therapist.approvalStatus = "Approved";
+    await therapist.save();
+
+    return res.json({ message: "Therapist approved successfully.", data: therapist });
+  } catch (error) {
+    console.error("Error approving therapist:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getAlllTherapists = async (req, res) => {
+  try {
+    const therapists = await Therapist.find();
+    res.status(200).json(therapists);
+  } catch (error) {
+    console.error('Error retrieving therapists:', error);
+    res.status(500).json({ error: 'Failed to retrieve therapists.' });
+  }
+};

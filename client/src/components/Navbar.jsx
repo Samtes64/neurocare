@@ -176,6 +176,26 @@ const Navbar = ({ currentUser }) => {
             <Navlink to="/chat">chat</Navlink>
           </MobileMenu>
         )}
+        {currentUser.userType === "admin" && (
+          <NavItems>
+            {/* <Navlink to="/">Profile</Navlink> */}
+            <Navlink to="/">Patients</Navlink>
+            <Navlink to="/therapist">Therapist</Navlink>
+            {/* <Navlink to="/documents">Documents</Navlink> */}
+            <Navlink to="/approve">Approve</Navlink>
+            <Navlink to="/payment">Payment</Navlink>
+          </NavItems>
+        )}
+        {currentUser.userType === "admin" && (
+          <MobileMenu isOpen={isOpen}>
+            {/* <Navlink to="/">Profile</Navlink> */}
+            <Navlink to="/">Patients</Navlink>
+            <Navlink to="/therapist">Therapist</Navlink>
+            {/* <Navlink to="/documents">Documents</Navlink> */}
+            <Navlink to="/approve">Approve</Navlink>
+            <Navlink to="/payment">Payment</Navlink>
+          </MobileMenu>
+        )}
 
         <UserContainer>
           {/* <Avatar src={currentUser?.img}>{currentUser?.firstName[0]}</Avatar>

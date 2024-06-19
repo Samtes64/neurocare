@@ -189,3 +189,45 @@ export const hasDocument = async (req, res,next) => {
     return res.status(500).json({ error: 'Failed to check document.' });
   }
 };
+
+
+export const downloadTherapistDocuments = async (req, res) => {
+  try {
+    const therapistId = req.params.therapistId;
+
+    // Find the therapist by ID
+    const therapist = await Therapist.findById(therapistId);
+
+    if (!therapist) {
+      return res.status(404).json({ error: 'Therapist not found.' });
+    }
+
+    // Find documents associated with the therapist
+    const documents = await Document.find({ therapist: therapist._id });
+
+    if (documents.length === 0) {
+      return res.status(404).json({ error: 'No documents found for this therapist.' });
+    }
+
+    // Create a ZIP archive and prepare it for download
+    const zip = archiver('zip');
+    res.attachment(`therapist_${therapistId}_documents.zip`);
+
+    zip.pipe(res);
+
+    // Add each document file to the ZIP archive
+    for (const document of documents) {
+      const filePath = path.join(__dirname, '..', 'public', 'Documents', document.document);
+      const fileExists = fs.existsSync(filePath);
+
+      if (fileExists) {
+        zip.file(filePath, { name: document.document });
+      }
+    }
+
+    zip.finalize();
+  } catch (error) {
+    console.error('Error downloading therapist documents:', error);
+    return res.status(500).json({ error: 'Failed to download therapist documents.' });
+  }
+};
