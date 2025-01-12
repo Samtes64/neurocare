@@ -61,22 +61,24 @@ export const UserRegister = async (req, res, next) => {
       };
 
       try {
-        const r = await axios.post(
-          "https://api.chatengine.io/users/",
-          {
-            username: createdUser.email,
-            secret: createdUser.email,
-            // email: createdUser.email,
-            first_name: createdUser.firstName,
-            last_name: createdUser.lastName,
-          },
-          { headers: { "Private-Key": "1b6dbf10-3fbd-46dd-b5e1-f94d331e35b2" } }
-        );
-        const chat = r.data;
+        // const r = await axios.post(
+        //   "https://api.chatengine.io/users/",
+        //   {
+        //     username: createdUser.email,
+        //     secret: createdUser.email,
+        //     // email: createdUser.email,
+        //     first_name: createdUser.firstName,
+        //     last_name: createdUser.lastName,
+        //   },
+        //   { headers: { "Private-Key": "1b6dbf10-3fbd-46dd-b5e1-f94d331e35b2" } }
+        // );
+        // const chat = r.data;
         const token = jwt.sign({ id: createdUser._id }, process.env.JWT, {
           expiresIn: "9999 years",
         });
-        return res.status(200).json({ token, user, userinfo, chat });
+        return res.status(200).json({ token, user, userinfo, 
+          // chat
+         });
       } catch (e) {
         console.log(e);
       }

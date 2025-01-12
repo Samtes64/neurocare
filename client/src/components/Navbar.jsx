@@ -7,6 +7,7 @@ import { Avatar } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/reducers/userSlice";
 import ProfileMenu from "../chatting/layouts/dashboard/ProfileMenu";
+import { useSelector } from "react-redux";
 
 const Nav = styled.div`
   background-color: ${({ theme }) => theme.bg};
@@ -131,6 +132,7 @@ const MobileMenu = styled.ul`
 const Navbar = ({ currentUser }) => {
   const dispatch = useDispatch();
   const [isOpen, setisOpen] = useState(false);
+  const {  userinfo } = useSelector((state) => state.user);
   return (
     <Nav>
       <NavContainer>
@@ -147,7 +149,7 @@ const Navbar = ({ currentUser }) => {
             <Navlink to="/">Dashboard</Navlink>
             <Navlink to="/todos">Todos</Navlink>
             <Navlink to="/chat">chat</Navlink>
-            <Navlink to="/therapist">Therapist</Navlink>
+            {userinfo.isPremium  && <Navlink to="/therapist">Therapist</Navlink>}
           </MobileMenu>
         )}
         {currentUser.userType === "patient" && (
@@ -155,7 +157,7 @@ const Navbar = ({ currentUser }) => {
             <Navlink to="/">Dashboard</Navlink>
             <Navlink to="/todos">Todos</Navlink>
             <Navlink to="/chat">chat</Navlink>
-            <Navlink to="/therapist">Therapist</Navlink>
+            {userinfo.isPremium  && <Navlink to="/therapist">Therapist</Navlink>}
           </NavItems>
         )}
         {currentUser.userType === "therapist" && (

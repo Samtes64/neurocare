@@ -67,29 +67,37 @@ function App() {
             <Navbar currentUser={currentUser} />
 
             <Routes>
-              {currentUser.userType === "patient" && (
-                <>
-                  <Route path="/" exact element={<Dashboard />} />
-                  <Route path="/donetasks" exact element={<DoneTasks />} />
-                  <Route path="/todos" exact element={<Todos />} />
-                   <Route path="/chat/*" element={<DashboardLayout />}>
-                    <Route index element={<GeneralApp />} />
-                    <Route path="group" element={<Group />} />
-                    <Route path="call" element={<Call />} />
+  {currentUser.userType === "patient" && (
+    <>
+      <Route path="/" exact element={<Dashboard />} />
+      <Route path="/donetasks" exact element={<DoneTasks />} />
+      <Route path="/todos" exact element={<Todos />} />
+      <Route path="/chat/*" element={<DashboardLayout />}>
+        <Route index element={<GeneralApp />} />
+        <Route path="group" element={<Group />} />
+        <Route path="call" element={<Call />} />
+        <Route path="404" element={<Page404 />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
+      </Route>
+      <Route path="/settings" exact element={<Settings />} />
+      <Route path="/assessment" exact element={<Assessment />} />
 
-                    <Route path="404" element={<Page404 />} />
-                    <Route path="*" element={<Navigate to="/404" replace />} />
-                  </Route> 
+      
+      {userinfo.isPremium  ? (
+        <>
+          <Route path="/therapist" exact element={<Therapists />} />
+          <Route path="/therapist/:id" element={<TherapistProfile />} />
+        </>
+      ) : (
+        <>
+          <Route path="/therapist" element={<Navigate to="/" replace />} />
+          <Route path="/therapist/:id" element={<Navigate to="/" replace />} />
+        </>
+      )}
+    </>
+  )}
+</Routes>
 
-                  {/* <Route path="/chat" exact element={<ChatsPage />} /> */}
-                  <Route path="/settings" exact element={<Settings />} />
-                  <Route path="/profile" exact element={<Profile />} />
-                  <Route path="/therapist" exact element={<Therapists />} />
-                  <Route path="/therapist/:id" element={<TherapistProfile />} />
-                  <Route path="/assessment" exact element={<Assessment />} />
-                </>
-              )}
-            </Routes>
             <Routes>
               {currentUser.userType === "therapist" && (
                 userinfo.therapistApprovalStatus === "Approved" ? (
