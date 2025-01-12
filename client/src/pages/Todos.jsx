@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import { getAssignedTasksForPatient } from "../api";
+import { useSelector } from "react-redux";
+
 
 const initialDailyTasks = [
   // { id: 1, task: "Morning Exercise", completed: false, assignedBy: "system" },
@@ -15,6 +17,7 @@ const Todos = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   const token = localStorage.getItem("fittrack-app-token");
+  const {  userinfo } = useSelector((state) => state.user);
 
   const handleTaskClick = (task) => {
     setSelectedTask(task);
@@ -98,6 +101,7 @@ const Todos = () => {
             )}
           </ul>
         </div>
+        {userinfo.isPremium && 
         <div className="flex-1 bg-white shadow-lg rounded-lg p-6 border-[1px]">
           <h2 className="text-2xl font-semibold mb-4 text-blue-700">Therapist Assigned Tasks</h2>
           <ul className="space-y-4">
@@ -133,7 +137,7 @@ const Todos = () => {
               ))
             )}
           </ul>
-        </div>
+        </div>}
       </div>
       {isModalOpen && (
         <Modal
