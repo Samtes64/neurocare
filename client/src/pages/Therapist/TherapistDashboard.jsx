@@ -154,7 +154,7 @@ const TherapistDashboard = () => {
   };
 
   return (
-    <div className="my-4 mx-auto max-w-screen-xl px-4">
+    <div className="my-4 mx-auto max-w-screen-xl px-4 overflow-y-scroll">
       <div className="flex flex-wrap p-4 gap-4">
         <div className="flex items-center gap-4 flex-wrap">
           <div className="w-[150px] border-blue-400 border-2 shadow-md p-2 rounded">

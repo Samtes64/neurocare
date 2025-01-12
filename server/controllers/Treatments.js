@@ -12,24 +12,34 @@ export const getAllTreatments = async (req, res, next) => {
 
 export const addTreatment = async (req, res) => {
   try {
-    const { name, description, duration } = req.body;
+    const { name, description, duration, treatmentCategory } = req.body;
 
+    // Validate required fields
     if (!name) {
       return res.status(400).json({ message: "Name is required" });
     }
 
+    if (!treatmentCategory) {
+      return res.status(400).json({ message: "Treatment category is required" });
+    }
+
+    // Create the new treatment
     const newTreatment = new Treatment({
-      name,
-      description,
-      duration,
+      treatmentName: name,
+      treatmentDescription: description,
+      treatmentCategory,
+      // Optionally include duration if needed as part of the schema or additional logic
     });
 
+    // Save the treatment to the database
     const savedTreatment = await newTreatment.save();
     res.status(201).json(savedTreatment);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 export const getTreatmentsByCategory = async (req, res) => {
   try {
