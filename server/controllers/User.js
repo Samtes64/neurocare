@@ -374,7 +374,6 @@ export const UserLogin = async (req, res, next) => {
       if (!therapist) {
         return next(createError(404, "Therapist not found"));
       }
-      console.log(therapist);
       const userinfo = {
         therapistId: therapist._id,
         therapistFirstName: therapist.firstName,
@@ -382,23 +381,26 @@ export const UserLogin = async (req, res, next) => {
         therapistApprovalStatus: therapist.approvalStatus,
         therapistProfileImageName: therapist.profileImageName,
       };
-
+      
+      console.log(userinfo);
       try {
-        const r = await axios.get("https://api.chatengine.io/users/me/", {
-          headers: {
-            "Project-ID": "041a7342-4a91-40c0-ada4-6aa6ac8a1177",
-            "User-Name": email,
-            "User-Secret": email,
-          },
-        });
-        const chat = r.data;
-        return res.status(200).json({ token, user, userinfo, chat });
+        // const r = await axios.get("https://api.chatengine.io/users/me/", {
+        //   headers: {
+        //     "Project-ID": "041a7342-4a91-40c0-ada4-6aa6ac8a1177",
+        //     "User-Name": email,
+        //     "User-Secret": email,
+        //   },
+        // });
+        // const chat = r.data;
+        return res.status(200).json({ token, user, userinfo,
+// chat
+         });
       } catch (e) {
         console.log(e);
       }
     }
 
-    return res.status(200).json({ token, user });
+    return res.status(200).json({ token, user,userinfo });
   } catch (error) {
     return next(error);
   }

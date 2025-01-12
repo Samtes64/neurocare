@@ -46,7 +46,7 @@ const GeneralApp = Loadable(
 );
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   scroll: auto;
   display: flex;
   flex-direction: column;
@@ -72,16 +72,16 @@ function App() {
                   <Route path="/" exact element={<Dashboard />} />
                   <Route path="/donetasks" exact element={<DoneTasks />} />
                   <Route path="/todos" exact element={<Todos />} />
-                  {/* <Route path="/chat/*" element={<DashboardLayout />}>
+                   <Route path="/chat/*" element={<DashboardLayout />}>
                     <Route index element={<GeneralApp />} />
                     <Route path="group" element={<Group />} />
                     <Route path="call" element={<Call />} />
 
                     <Route path="404" element={<Page404 />} />
                     <Route path="*" element={<Navigate to="/404" replace />} />
-                  </Route> */}
+                  </Route> 
 
-                  <Route path="/chat" exact element={<ChatsPage />} />
+                  {/* <Route path="/chat" exact element={<ChatsPage />} /> */}
                   <Route path="/settings" exact element={<Settings />} />
                   <Route path="/profile" exact element={<Profile />} />
                   <Route path="/therapist" exact element={<Therapists />} />
@@ -91,7 +91,7 @@ function App() {
               )}
             </Routes>
             <Routes>
-              {currentUser.userType === "therapist" ? (
+              {currentUser.userType === "therapist" && (
                 userinfo.therapistApprovalStatus === "Approved" ? (
                   <>
                     <Route path="/" exact element={<TherapistDashboard />} />
@@ -105,9 +105,6 @@ function App() {
                   <Route path="/profile" exact element={<Profile />} />
                   </>
                 )
-              ) : (
-                // Add routes for other user types here
-                <Route path="*" element={<div>Access Denied</div>} />
               )}
             </Routes>
             <Routes>
