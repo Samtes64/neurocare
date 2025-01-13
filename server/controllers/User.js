@@ -402,7 +402,7 @@ export const UserLogin = async (req, res, next) => {
       }
     }
 
-    return res.status(200).json({ token, user,userinfo });
+    return res.status(200).json({ token, user });
   } catch (error) {
     return next(error);
   }
